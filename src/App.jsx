@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import classes from'./App.module.scss';
+
+import React from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Avatars, Chords, Home, Intervals, Landing, Login, Notes, Roles, Songs, Topics, Users } from "./pages";
+import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
+import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className={classes["App"]}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<NoAuthLayout/>}>
+            <Route index element={<Landing/>}/>
+            <Route path="/landing" element={<Landing/>}/>
+          </Route>
+          <Route element={<ProtectedRoute/>}>
+            <Route element={<MainLayout/>}>
+              <Route path="/home" element={<Home/>}/>
+              <Route path="/notes" element={<Notes/>}/>
+              <Route path="/chords" element={<Chords/>}/>
+              <Route path="/intervals" element={<Intervals/>}/>
+              <Route path="/songs" element={<Songs/>}/>
+              <Route path="/topics" element={<Topics/>}/>
+              <Route path="/roles" element={<Roles/>}/>
+              <Route path="/users" element={<Users/>}/>
+              <Route path="/avatars" element={<Avatars/>}/>
+            </Route>
+          </Route>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="*" element={<h1>404 Not Found</h1>}/>
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
-export default App
+export default App;
