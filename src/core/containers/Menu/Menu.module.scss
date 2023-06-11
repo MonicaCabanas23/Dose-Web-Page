@@ -1,0 +1,10 @@
+@import "./../../../variables";
+
+.Menu {
+    display: flex;
+    background-color: $primary-text-icons-color;
+    color: #ffffff;
+    width: 13.5rem;
+    flex-direction: column;
+    box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.25);
+}
