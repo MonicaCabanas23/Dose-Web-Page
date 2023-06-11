@@ -1,0 +1,15 @@
+@import "./../../../variables";
+
+.Logout {
+    background-color: $primary-color;
+    border-radius: 1.875rem;
+    height: 2.875rem;
+    width: 14.375rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    &:hover {        
+        background-color: $dark-primary-color;
+    }
+}
