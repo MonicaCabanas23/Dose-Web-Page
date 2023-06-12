@@ -1,0 +1,51 @@
+@import './../../variables';
+
+.InputContainer {
+    position: relative;
+    width: 100%;
+}
+  
+input {
+    height: 4rem;
+    width: 100%;
+    border: 1px solid $divider-color;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+.InputLabel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+input, .InputLabel .LabelText {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid $primary-color;
+}
+
+.InputLabel .LabelText {
+    transition: all 0.15s ease-out;
+}
+
+input:focus + .InputLabel .LabelText, :not(input[value=""]) + .InputLabel .LabelText {
+    font-size: 0.75rem;
+    transform: translate(0, -250%);
+    background-color: white;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+input:focus + .InputLabel .LabelText {
+    color: $primary-color;
+}
