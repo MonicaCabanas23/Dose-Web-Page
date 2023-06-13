@@ -88,6 +88,7 @@ export const Roles = () => {
         }
 
         e.preventDefault();
+        e.target.disabled = true;
         fetch(`https://api.mingo.studio/api/userType/${info.id}`, {
             method:"PUT",
             crossDomain:true,
@@ -110,6 +111,7 @@ export const Roles = () => {
             setShowEdit(false);
             setInputs({});
             fetchRoles();
+            e.target.disabled = false;
             alert("Rol modificado");
             return;
         }).catch((error) => {
@@ -124,6 +126,8 @@ export const Roles = () => {
         }
 
         e.preventDefault();
+        e.target.disabled = true;
+
         fetch(`https://api.mingo.studio/api/userType/${info.id}`, {
             method:"DELETE",
             crossDomain:true,
@@ -143,6 +147,7 @@ export const Roles = () => {
             setShowDelete(false);            
             fetchRoles();
             alert("Rol eliminado");
+            e.target.disabled = false;
             return;
         }).catch((error) => {
             alert(error);
@@ -161,6 +166,7 @@ export const Roles = () => {
         }
 
         e.preventDefault();
+        e.target.disabled = true;
         fetch(`https://api.mingo.studio/api/userType/`, {
             method:"POST",
             crossDomain:true,
@@ -183,6 +189,7 @@ export const Roles = () => {
             setShowAdd(false);
             setInfo({});
             fetchRoles();
+            e.target.disabled = false;
             alert("Rol Agregado");
             return;
         }).catch((error) => {
