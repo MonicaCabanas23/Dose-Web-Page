@@ -5,7 +5,8 @@
     flex: 1;
 
     main {
-        margin-inline: 4.125rem;
-        margin-block: 2.75rem;
+        background-color: $background-color;
+        padding-inline: 4.125rem;
+        padding-block: 2.75rem;
     }
 }

@@ -1,0 +1,23 @@
+@import './../../../variables';
+
+.Cards {
+    flex: 1 0 20.75rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 7.375rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;    
+    font-family: 'Montserrat', sans-serif;    
+
+    &.CardAdd {
+        background-color: $accent-color;
+        font-size: 1.5rem;
+        color: #ffffff;
+
+        &:hover {
+            cursor: pointer;
+            background-color: $dark-accent-color;
+        }
+    }
+}
