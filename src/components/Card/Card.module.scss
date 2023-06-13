@@ -1,0 +1,15 @@
+@import './../../variables';
+
+.Card {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 2rem;
+    gap: 1rem;
+
+    &.flex-card {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
