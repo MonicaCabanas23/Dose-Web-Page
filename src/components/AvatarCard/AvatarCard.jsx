@@ -1,14 +1,7 @@
 import classes from "./AvatarCard.module.scss"
 import { ItemButton } from './../Buttons/ItemButton/ItemButton';
 
-export const AvatarCard = ({avatar}) => {
-    const editClick = () => {
-        alert(`Quieres editar ${avatar._id}`);
-    }
-
-    const deleteClick = () => {
-        alert(`Quieres eliminar ${avatar._id}`)
-    }
+export const AvatarCard = ({avatar, handleEdit, handleDelete}) => {
 
     return (
         <div className={classes["AvatarCard"]}>
@@ -16,8 +9,8 @@ export const AvatarCard = ({avatar}) => {
                 <img src={avatar.picture} alt='avatar-image'/>
             </div>
             <div className={classes["Actions"]}>
-                <ItemButton clickHandler={editClick} icon="edit"/>
-                <ItemButton clickHandler={deleteClick} icon="delete"/>
+                <ItemButton clickHandler={handleEdit} icon="edit"/>
+                <ItemButton clickHandler={handleDelete} icon="delete"/>
             </div>
         </div>
     )
