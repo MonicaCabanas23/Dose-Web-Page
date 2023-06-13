@@ -5,6 +5,7 @@
     flex: 1;
 
     main {
+        max-height: calc(100vh - 5.25rem - 5.5rem);
         background-color: $background-color;
         padding-inline: 4.125rem;
         padding-block: 2.75rem;
