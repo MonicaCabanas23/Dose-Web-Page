@@ -1,3 +1,29 @@
+@import './variables';
+
+* {
+	/* width */
+	::-webkit-scrollbar {
+		width: 10px;
+	}
+	
+	/* Track */
+	::-webkit-scrollbar-track {
+		background: $primary-text-icons-color;
+    border-radius: 1rem;
+	}
+	
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: $primary-color;
+    border-radius: 1rem;
+	}
+	
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: $dark-primary-color;
+	}
+}
+
 .App {
     width: 100%;
     min-height: 100vh;
