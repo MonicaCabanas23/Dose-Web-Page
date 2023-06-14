@@ -6,13 +6,16 @@ export const useAuth = () => {
 }
 
 export const useValidateToken = () => {
-    const decodeJwt = jwt_decode(useAuth().token);
+    if (useAuth() !== null) {
+        const decodeJwt = jwt_decode(useAuth().token);
 
-    if (decodeJwt.exp <= (new Date().getTime() + 1) / 1000) {
-        localStorage.removeItem('dataStorage');
+        if (decodeJwt.exp <= (new Date().getTime() + 1) / 1000) {
+            localStorage.removeItem('dataStorage');
 
-        return false;
+            return false;
+        }
+        return true;
     }
 
-    return true;
+    return false;
 }
