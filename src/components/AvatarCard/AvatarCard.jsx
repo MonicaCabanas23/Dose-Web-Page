@@ -9,7 +9,7 @@ export const AvatarCard = ({avatar, handleEdit, handleDelete}) => {
                 <img src={avatar.picture} alt='avatar-image'/>
             </div>
             <div className={classes["Actions"]}>
-                <ItemButton clickHandler={handleEdit} icon="edit"/>
+                <ItemButton clickHandler={() => {handleEdit(avatar)}} icon="edit"/>
                 <ItemButton clickHandler={handleDelete} icon="delete"/>
             </div>
         </div>
