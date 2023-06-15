@@ -8,8 +8,8 @@
     padding: 16px;
     gap: 16px;
 
-    width: 245px;
-    height: 227px;
+    flex: 1 0 245px;
+    min-height: 227px;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -21,13 +21,15 @@
         transform: scale(1.05);
     }
 
-    div {
+    .Picture {
         width: 136px;
         height: 172px;
 
         img {
             width: 100%;
             height: 100%;
+            max-width: 136px;
+            max-height: 172px;
             object-fit: contain;
         }
     }

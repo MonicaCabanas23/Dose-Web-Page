@@ -4,7 +4,7 @@ import { IconContext } from "react-icons";
 import { AvatarCard } from '../../components/AvatarCard/AvatarCard'
 import { Modal } from '../../components/modal/Modal';
 import { ImageUploader } from '../../components/ImageUploader/ImageUploader';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject, getMetadata } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject} from "firebase/storage";
 import storage from '../../hooks/useFirebase';
 import { useAuth } from '../../hooks/useAuth';
 import { useEffect, useState } from 'react'
@@ -44,7 +44,7 @@ export const Avatars = () => {
 
     const updateAvatar = async (imageUrl) => {
         // Delete the old image from firebase
-
+        deleteFromFirebase(selectedAvatar.picture)
         // Get token from localstorage
         const dataStorage = useAuth()
         const token = dataStorage.token
@@ -73,27 +73,35 @@ export const Avatars = () => {
         }
     }
 
+    // Delete fron Firebase
+    const deleteFromFirebase = (urlRef) => {
+        // Get the storage reference
+        const storageRef = ref(storage, urlRef)
+
+        // Delete the image
+        deleteObject(storageRef).then(() => {
+            console.log("Se eliminó de firebase")
+        }).catch((error) => {
+            console.log("Un error ocurrió")
+        })
+    }
+
     // Save in Firebase
-    const uploadToFirebase = (images) => {
+    const uploadToFirebase = async (images) => {
         // images is an array which has data_url and the file
         if(!images) {
             alert("Please select an image")
         }
 
         // Gets the storage location to save the image
-        const storageRef = ref(storage, `/mingo-avatar-images/${images[0].file.name}`)
+        const storageRef = await ref(storage, `/mingo-avatar-images/${images[0].file.name}`)
         // Uploads the image in the storage reference defined before
-        const uploadTask = uploadBytesResumable(storageRef, images[0].file);
-
-        uploadTask.on(
-            "state_changed",
-            () => {
-                // Gets the url
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    updateAvatar(url)
-                });
-            }
-        ); 
+        const uploadTask = uploadBytesResumable(storageRef, images[0].file)
+        .then(() => {
+            getDownloadURL(storageRef).then((url) => {
+                updateAvatar(url)
+            });
+        });
     }
 
     return (

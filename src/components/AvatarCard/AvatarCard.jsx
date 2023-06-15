@@ -5,7 +5,7 @@ export const AvatarCard = ({avatar, handleEdit, handleDelete}) => {
 
     return (
         <div className={classes["AvatarCard"]}>
-            <div>
+            <div className={classes["Picture"]}>
                 <img src={avatar.picture} alt='avatar-image'/>
             </div>
             <div className={classes["Actions"]}>
