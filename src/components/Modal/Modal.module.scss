@@ -8,8 +8,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    user-select: none;
+    align-items: center;    
     pointer-events: none;
 
     transition: all 500ms;
@@ -47,11 +46,20 @@
                 cursor: pointer;
             }
         }
+
+        > div {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 28.6875rem;
+
+            flex-direction: column;
+        }
     }
 
     &.active {
-        background-color: #00000050;    
-        user-select: all;
+        background-color: #00000050;        
         pointer-events: all;
 
         > .modal-container {

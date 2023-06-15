@@ -5,12 +5,14 @@ import { useState, useEffect } from 'react';
 
 import { Input } from '../../components/Input/Input';
 import { useAuth } from '../../hooks/useAuth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
     if (useAuth() !== null) {
         return <Navigate to="/Home"/>;
     }
+
+    const navigate = useNavigate();
 
     const [inputs, setInputs] = useState({
         email: "",
@@ -43,7 +45,7 @@ export const Login = () => {
             headers:{
                 "Content-Type" : "application/json",
                 Accept: "application/json",
-                "Acces-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "*",
             },
             body: JSON.stringify({
                 identifier: inputs.email,
@@ -61,7 +63,7 @@ export const Login = () => {
                 token: data.token
             }));
             setTimeout(() => {        
-                window.location.href = "/Home";
+                navigate("/Home");
             }, 2000);
             return;
         }).catch((error) => {
