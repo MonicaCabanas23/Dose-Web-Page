@@ -1,0 +1,24 @@
+@import "./../../../variables";
+
+.ActionButton {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+
+    min-height: 3.375rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.125rem;
+    display: flex;
+    padding-inline: 1.875rem;
+
+    align-items: center;
+    gap: 1rem;   
+
+    &.activeActionButton {
+        background-color: $accent-color;
+    }
+
+    &:hover {
+        background-color: $accent-color;
+    }
+}

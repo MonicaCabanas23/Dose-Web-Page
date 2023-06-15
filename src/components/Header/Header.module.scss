@@ -1,0 +1,30 @@
+@import "./../../variables";
+
+.Header {
+    background-color: $primary-text-icons-color;
+    max-height: 5.25rem;
+    height: 5.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.0625rem 5rem;
+
+    > .Logo {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        user-select: none;
+        
+        > img {
+            transform: scale(0.75);
+            pointer-events: none;
+            object-fit: contain;
+        }
+
+        > h1 {
+            font-size: 2.125rem;
+            font-family: 'Barlow Condensed';
+            color: $primary-color;
+        }
+    }
+}
