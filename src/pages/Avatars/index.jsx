@@ -1,12 +1,12 @@
 import classes from './Avatar.module.scss'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { IconContext } from "react-icons";
-import { AvatarCard } from './../../components/AvatarCard/AvatarCard'
-import { Modal } from './../../components/modal/Modal';
-import { ImageUploader } from './../../components/ImageUploader/ImageUploader';
+import { AvatarCard } from '../../components/AvatarCard/AvatarCard'
+import { Modal } from '../../components/Modal/Modal';
+import { ImageUploader } from '../../components/ImageUploader/ImageUploader';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject} from "firebase/storage";
-import storage from './../../hooks/useFirebase';
-import { useAuth } from './../../hooks/useAuth';
+import storage from '../../hooks/useFirebase';
+import { useAuth } from '../../hooks/useAuth';
 import { useEffect, useState } from 'react'
 
 export const Avatars = () => {
@@ -74,16 +74,31 @@ export const Avatars = () => {
         }
     }
 
-    /* const deleteAvatar = async (imageUrl) => {
+    const deleteAvatar = async (imageUrl) => {
         // Delete the old image from firebase
         deleteFromFirebase(selectedAvatar.picture)
 
         try {
+            const response = await fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
+                method: "DELETE",
+                crossDomain:true,
+                headers: {
+                    "Content-Type" : "application/json",
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*", 
+                    "Authorization": `bearer ${token}`
+                },
+                body: JSON.stringify({
+                    "picture": `${imageUrl}`
+                })  
+            })
+            .then((response) => response.json());
 
+            getAvatars()
         } catch(error) {
             console.log(error)
         }
-    } */
+    }
 
     // Delete fron Firebase
     const deleteFromFirebase = (urlRef) => {
