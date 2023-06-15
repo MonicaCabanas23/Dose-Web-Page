@@ -48,20 +48,22 @@ export const Avatars = () => {
         // Get token from localstorage
         const dataStorage = useAuth()
         const token = dataStorage.token
+
         
         // Update the avatar with the new image
         try {
             const response = await fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
                 method: "PUT",
+                crossDomain:true,
                 headers: {
                     "Content-Type" : "application/json",
-                    "Accept": "*/*",
-                    "Acces-Control-Allow-Origin": "*", 
-                    "Authorization": "Bearer " + token
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*", 
+                    "Authorization": `bearer ${token}`
                 },
-                body: {
-                    "picture": imageUrl
-                }  
+                body: JSON.stringify({
+                    "picture": `${imageUrl}`
+                })  
             })
             .then((response) => response.json());
 
@@ -99,7 +101,7 @@ export const Avatars = () => {
             {
                 avatars && 
                 avatars.map((avatar) => (
-                    <AvatarCard avatar={avatar} handleEdit={handleEditClick} handleDelete={handleDeleteClick}/>
+                    <AvatarCard  key={avatar._id} avatar={avatar} handleEdit={handleEditClick} handleDelete={handleDeleteClick}/>
                 ))
             }
              <IconContext.Provider value={{ color: "white", size: "40px" }}>
