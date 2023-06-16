@@ -1,6 +1,7 @@
 import classes from "./ImageUploader.module.scss"
 import ImageUploading from 'react-images-uploading';
 import { useState } from 'react';
+import { ItemButton } from "../Buttons/ItemButton/ItemButton";
 
 export const ImageUploader = ({handleSaveClick, number}) => {
     const [images, setImages] = useState([]);
@@ -30,7 +31,8 @@ export const ImageUploader = ({handleSaveClick, number}) => {
           // write your building UI
           <div className={classes["upload__image-wrapper"]}>
             <button
-              style={isDragging ? { color: 'red' } : undefined}
+              className={classes["clickeable_drag"]}
+              style={isDragging ? { color: '#7C4DFF' } : undefined}
               onClick={onImageUpload}
               {...dragProps}
             >
@@ -39,14 +41,18 @@ export const ImageUploader = ({handleSaveClick, number}) => {
             &nbsp;
             {imageList.map((image, index) => (
               <div key={index} className={classes["image-item"]}>
-                <img src={image['data_url']} alt="" width="100" />
+                <div className={classes["picture"]}>
+                  <img src={image['data_url']} alt="" width="100" />
+                </div>
                 <div className={classes["image-item__btn-wrapper"]}>
-                  <button onClick={() => onImageUpdate(index)}>Update</button>
-                  <button onClick={() => onImageRemove(index)}>Remove</button>
+                  <ItemButton clickHandler={() => {onImageUpdate(index)}} icon="edit"/>
+                  <ItemButton clickHandler={() => {onImageRemove(index)}} icon="delete"/>
                 </div>
               </div>
             ))}
-            <button onClick={() => {handleSaveClick(images)}}>Save</button>
+            <div className={classes["button_container"]}>
+              <button className={classes["save_button"]} onClick={() => {handleSaveClick(images)}}>Save</button>
+            </div>
           </div>
         )}
       </ImageUploading>
