@@ -4,7 +4,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Avatars, Chords, Home, Intervals, Landing, Login, Notes, Roles, Songs, Topics, Users } from "./pages";
+import { Avatars, Chords, Home, Intervals, Landing, Login, Notes, Note, Roles, Songs, Topics, Users } from "./pages";
 import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
@@ -20,7 +20,10 @@ function App() {
           <Route element={<ProtectedRoute/>}>
             <Route element={<MainLayout/>}>
               <Route path="/home" element={<Home/>}/>
-              <Route path="/notes" element={<Notes/>}/>
+              <Route path="/notes" element={<Notes/>}>
+                <Route path="note" element={<Note/>}/>
+                <Route path="note/:id" element={<Note/>}/>
+              </Route>
               <Route path="/chords" element={<Chords/>}/>
               <Route path="/intervals" element={<Intervals/>}/>
               <Route path="/songs" element={<Songs/>}/>

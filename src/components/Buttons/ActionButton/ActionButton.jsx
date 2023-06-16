@@ -8,6 +8,7 @@ import { MdOutlinePiano, MdOutlineLibraryMusic, MdOutlineMenuBook, MdChecklist, 
 
 export const ActionButton = ({url = "", name = "", icon=""}) => {
     const location = useLocation();
+    const parentLocation = location.pathname.split("/")[1];    
 
     const icons = [
         {
@@ -57,13 +58,13 @@ export const ActionButton = ({url = "", name = "", icon=""}) => {
 
     let classesButton = [classes["ActionButton"]];
 
-    if (location.pathname === url) {
+    if (`/${parentLocation}` === url) {
         classesButton = [...classesButton, classes["activeActionButton"]];        
     }
 
     return (
         <>
-            <Link to={url} className={ classesButton.join(" ") }>
+            <Link to={`/${parentLocation}` === url ? "#" : url} className={ classesButton.join(" ") }>
                 {iconToUseElements}{name}
             </Link>            
         </>

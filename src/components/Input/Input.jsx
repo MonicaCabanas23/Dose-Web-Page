@@ -7,7 +7,7 @@ export const Input = ({id, handleInput, value, name, type}) => {
                 type={type}
                 id={id}
                 name={id}
-                value={value}
+                defaultValue={value}
                 aria-labelledby={"label-${id}"}
                 onInput={handleInput}
             />

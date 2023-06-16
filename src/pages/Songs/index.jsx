@@ -1,5 +1,10 @@
+import classes from './Songs.module.scss';
+import { Card } from './../../components/Card/Card';
+
 export const Songs = () => {
     return (
-        <h2>Songs Page</h2>
+        <Card>
+
+        </Card>
     )
 }
