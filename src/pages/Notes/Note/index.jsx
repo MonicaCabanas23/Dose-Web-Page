@@ -83,8 +83,6 @@ export const Note = () => {
             return;
         }
 
-        console.log()
-
         fetch(`https://api.mingo.studio/api/musicalNote/${id}`, {
             method:"PUT",
             crossDomain:true,
