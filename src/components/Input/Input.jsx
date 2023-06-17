@@ -1,6 +1,6 @@
 import classes from './Input.module.scss';
 
-export const Input = ({id, handleInput, value, name, type}) => {
+export const Input = ({id, handleInput, value, name, type, block=false}) => {
     return (
         <div className={ classes["InputContainer"]}>
             <input
@@ -10,6 +10,7 @@ export const Input = ({id, handleInput, value, name, type}) => {
                 defaultValue={value}
                 aria-labelledby={"label-${id}"}
                 onInput={handleInput}
+                disabled={block}
             />
             <label className={ classes["InputLabel"]} htmlFor={id} id={"label-${id}"}>
                 <div className={ classes["LabelText"] }>{name}</div>

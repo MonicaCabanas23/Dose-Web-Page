@@ -19,7 +19,7 @@ export const Table = ({info = [], reloadClick, addClick, editClick, deleteClick}
                 </div>
                 <div className={ [ classes['Table-Column'], classes['Icons']].join(" ") } style={{ "--gap": "3rem" }}>
                     <BiEditAlt onClick={e => editClick(info._id)}/>
-                    <BiTrash/>
+                    <BiTrash onClick={() => {deleteClick(info)}}/>
                 </div>
             </div>
         )
