@@ -95,6 +95,7 @@ export const Avatars = () => {
         const dataStorage = useAuth()
         const token = dataStorage.token
 
+
         // Delete Avatar
         try {
             fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
@@ -205,7 +206,6 @@ export const Avatars = () => {
                     <AiOutlinePlus />
                 </button>
              </IconContext.Provider>
-
              {
                 showEdit && selectedAvatar.picture ?
                 <Modal handleClickOpen={handleEditClick} show={showEdit}>
