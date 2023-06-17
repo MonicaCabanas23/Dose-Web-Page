@@ -77,7 +77,6 @@ export const Avatars = () => {
                 response.json()
                 setShowEdit(false)
             })
-            .cath((error) => console.log(error));
         } catch(error) {
             console.log(error)
         }
@@ -112,7 +111,6 @@ export const Avatars = () => {
                 response.json()
                 setShowDelete(false)
             })
-            .cath((error) => console.log(error));
 
         } catch(error) {
             console.log(error)
@@ -171,8 +169,9 @@ export const Avatars = () => {
     // Save in Firebase
     const uploadToFirebase = async (images) => {
         // images is an array which has data_url and the file
-        if(!images) {
+        if(!images || images.length <= 0) {
             alert("Please select an image")
+            return;
         }
 
         // Gets the storage location to save the image
@@ -207,22 +206,32 @@ export const Avatars = () => {
                 </button>
              </IconContext.Provider>
 
-             <Modal handleClickOpen={handleEditClick} show={showEdit}>
-                <span className={ [classes["Span"], classes["Title"]].join(" ") }>Edit</span>
-                <ImageUploader handleSaveClick={uploadToFirebase} number = {1}/>
-            </Modal>
-
-            <Modal handleClickOpen={handleDeleteClick} show={showDelete} w="27.5rem" h="15rem">
-                <span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete</span>
-                <div className={ classes["ButtonContainer"] }>
-                    <button className={ classes['SaveButton'] } onClick={deleteAvatar}>Delete</button>
-                </div>
-            </Modal>
-
-            <Modal handleClickOpen={handleAddClick} show={showAdd}>
-                <span className={ [classes["Span"], classes["Title"]].join(" ") }>Add</span>
-                <ImageUploader handleSaveClick={uploadToFirebase} number = {1}/>
-            </Modal>
+             {
+                showEdit && selectedAvatar.picture ?
+                <Modal handleClickOpen={handleEditClick} show={showEdit}>
+                    <span className={ [classes["Span"], classes["Title"]].join(" ") }>Edit</span>
+                    <ImageUploader item={selectedAvatar} handleSaveClick={uploadToFirebase} number = {1}/>
+                </Modal> :
+                <></>
+             }
+             {
+                showDelete ?
+                <Modal handleClickOpen={handleDeleteClick} show={showDelete} w="27.5rem" h="15rem">
+                    <span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete</span>
+                    <div className={ classes["ButtonContainer"] }>
+                        <button className={ classes['SaveButton'] } onClick={deleteAvatar}>Delete</button>
+                    </div>
+                </Modal> :
+                <></>
+             }
+             {
+                showAdd ? 
+                <Modal handleClickOpen={handleAddClick} show={showAdd}>
+                    <span className={ [classes["Span"], classes["Title"]].join(" ") }>Add</span>
+                    <ImageUploader handleSaveClick={uploadToFirebase} number = {1}/>
+                </Modal> :
+                <></>
+             }
         </div>
     )
 }
