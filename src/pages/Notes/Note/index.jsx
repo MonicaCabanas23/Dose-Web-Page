@@ -82,6 +82,9 @@ export const Note = () => {
             alert("Alert");
             return;
         }
+
+        console.log()
+
         fetch(`https://api.mingo.studio/api/musicalNote/${id}`, {
             method:"PUT",
             crossDomain:true,
@@ -92,7 +95,6 @@ export const Note = () => {
                 "Authorization": `bearer ${useAuth().token}`
             },
             body: JSON.stringify({
-                name: info.name,
                 picture: info.picture,
                 mp3: info.mp3
             }),
@@ -125,7 +127,8 @@ export const Note = () => {
                 "Access-Control-Allow-Origin": "*",
                 "Authorization": `bearer ${useAuth().token}`
             },
-            body: JSON.stringify({                
+            body: JSON.stringify({
+                name: info.name,
                 picture: info.picture,
                 mp3: info.mp3,
             }),
@@ -239,7 +242,7 @@ export const Note = () => {
         setBass(false);
     }    
 
-    return (
+    return (        
         <div className={ classes["Note"] }>
             <div className={ classes['Header'] }>
                 <div className={ classes['Header-Title'] }>
@@ -268,13 +271,18 @@ export const Note = () => {
             <div className={ classes["Uploaders"] }>
                 <div className={ classes["Uploader"] }>
                     <span>Picture</span>
-                    <ImageUploader handleSaveClick={uploadImagesToFirebase} number = {1}/>
+                    {
+                        !id ?
+                        <ImageUploader handleSaveClick={uploadImagesToFirebase} number = {1}/>
+                        :
+                        <ImageUploader key={info.picture} item={info} handleSaveClick={uploadImagesToFirebase} number = {1}/>
+                    }
                 </div>
                 <div className={ classes["Uploader"] }>
                     <span>MP3</span>
                     <AudioUploader handleSaveClick={uploadAudioToFirebase} value={id ? info.mp3 : null}/>
                 </div>
             </div>
-        </div>
+        </div>        
     )
 }
