@@ -36,7 +36,9 @@ export const Notes = () => {
     }
 
     useEffect(() => {
-        fetchNotes();
+        if (!outlet) {
+            fetchNotes();
+        }        
     }, [location]);
 
     const addClick = () => {
