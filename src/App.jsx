@@ -4,7 +4,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Avatars, Chords, Home, Intervals, Landing, Login, Notes, Note, Roles, Songs, Topics, Users } from "./pages";
+import { Avatars, Chords, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Topics, Users } from "./pages";
 import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
@@ -25,7 +25,10 @@ function App() {
                 <Route path="note/:id" element={<Note/>}/>
               </Route>
               <Route path="/chords" element={<Chords/>}/>
-              <Route path="/intervals" element={<Intervals/>}/>
+              <Route path="/intervals" element={<Intervals/>}>              
+                <Route path="interval" element={<Interval/>}/>
+                <Route path="interval/:id" element={<Interval/>}/>
+              </Route>
               <Route path="/songs" element={<Songs/>}/>
               <Route path="/topics" element={<Topics/>}/>
               <Route path="/roles" element={<Roles/>}/>
