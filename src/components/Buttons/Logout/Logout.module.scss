@@ -9,7 +9,20 @@
     font-size: 1.3rem;
     cursor: pointer;
 
+    &.Menu-Logout {
+        display: none;
+    }
+
     &:hover {        
         background-color: $dark-primary-color;
+    }
+
+    @media only screen and (max-width: 768px) {
+        display: none;
+
+        &.Menu-Logout {
+            display: block;
+            margin: auto;
+        }
     }
 }
