@@ -51,8 +51,7 @@ export const ImageUploader = ({item, handleSaveClick, number}) => {
               {...dragProps}
             >
               Click or Drop here
-            </button>
-            &nbsp;
+            </button>            
             {imageList.map((image, index) => (
               <div key={index} className={classes["image-item"]}>
                 <div className={classes["picture"]}>

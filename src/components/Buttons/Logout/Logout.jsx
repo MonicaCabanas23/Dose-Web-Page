@@ -1,6 +1,6 @@
 import classes from './Logout.module.scss';
 
-export const Logout = () => {    
+export const Logout = ({ classesProp=['Logout'] }) => {    
     const handleClick = (e) => {
         e.preventDefault();
         localStorage.removeItem('dataStorage');
@@ -9,8 +9,12 @@ export const Logout = () => {
         }, 2000)   
     }
 
+    const classesToShow = classesProp.map(x => {
+        return classes[x]
+    });
+
     return (
-        <button className={ classes['Logout'] } onClick={handleClick}>
+        <button className={ classesToShow.join(" ") } onClick={handleClick}>
             Logout
         </button>
     )

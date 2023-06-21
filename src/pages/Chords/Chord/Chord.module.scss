@@ -85,4 +85,12 @@
             }
         }
     }
+
+    @media only screen and (max-width: 1024px) {
+        padding: 1rem;
+        
+        > .Uploaders {
+            flex-direction: column;
+        }
+    }
 }
