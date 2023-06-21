@@ -25,7 +25,7 @@ export const Avatars = () => {
 
     useEffect(() => {
         getAvatars()
-    }, [avatars])
+    }, [])
 
     // For showing the edit modal
     const handleEditClick = (avatar) => {
