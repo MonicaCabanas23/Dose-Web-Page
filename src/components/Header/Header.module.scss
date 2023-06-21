@@ -27,4 +27,18 @@
             color: $primary-color;
         }
     }
+
+    > .Menu {
+        display: none;
+        color: #ffffff;
+        font-size: 1.5rem;
+        order: 2;
+    }
+
+    @media only screen and (max-width: 768px) {
+        > .Menu {
+            cursor: pointer;
+            display: block;
+        }
+    }
 }

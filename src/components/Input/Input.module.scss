@@ -47,5 +47,5 @@ input:focus + .InputLabel .LabelText, :not(input[value=""]) + .InputLabel .Label
 }
 
 input:focus + .InputLabel .LabelText {
-    color: $primary-color;
+    color: $secondary-text-color;
 }

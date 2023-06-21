@@ -10,7 +10,7 @@ export const AvatarCard = ({avatar, handleEdit, handleDelete}) => {
             </div>
             <div className={classes["Actions"]}>
                 <ItemButton clickHandler={() => {handleEdit(avatar)}} icon="edit"/>
-                <ItemButton clickHandler={handleDelete} icon="delete"/>
+                <ItemButton clickHandler={() => {handleDelete(avatar)}} icon="delete"/>
             </div>
         </div>
     )

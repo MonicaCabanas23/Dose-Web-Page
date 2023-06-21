@@ -13,10 +13,9 @@
     justify-content: center;
     gap: 16px;
 
-
     .AddButton {
-        width: 245px;
-        height: 227px;
+        flex: 1 0 245px;
+        min-height: 227px;
 
         background-color: $accent-color;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -27,8 +26,32 @@
         
         &:hover {
             cursor: pointer;
-            transform: scale(1.05);
+            transform: scale(1.025);
             background-color: $dark-accent-color;
+        }
+    }
+    
+    .ButtonContainer {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .SaveButton {
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            background-color: $accent-color;
+            border-radius: 1.875rem;
+            height: 2.5rem;
+            width: 12rem;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #ffffff;
+            border: none;
+        
+            &:hover {        
+                background-color: $dark-accent-color;
+            }
         }
     }
 }

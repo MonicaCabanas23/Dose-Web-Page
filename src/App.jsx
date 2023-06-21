@@ -4,7 +4,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Avatars, Chords, Home, Intervals, Landing, Login, Notes, Roles, Songs, Topics, Users } from "./pages";
+import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Topics, Users } from "./pages";
 import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
@@ -20,9 +20,18 @@ function App() {
           <Route element={<ProtectedRoute/>}>
             <Route element={<MainLayout/>}>
               <Route path="/home" element={<Home/>}/>
-              <Route path="/notes" element={<Notes/>}/>
-              <Route path="/chords" element={<Chords/>}/>
-              <Route path="/intervals" element={<Intervals/>}/>
+              <Route path="/notes" element={<Notes/>}>
+                <Route path="note" element={<Note/>}/>
+                <Route path="note/:id" element={<Note/>}/>
+              </Route>
+              <Route path="/chords" element={<Chords/>}>
+                <Route path="chord" element={<Chord/>}/>
+                <Route path="chord/:id" element={<Chord/>}/>
+              </Route>
+              <Route path="/intervals" element={<Intervals/>}>              
+                <Route path="interval" element={<Interval/>}/>
+                <Route path="interval/:id" element={<Interval/>}/>
+              </Route>
               <Route path="/songs" element={<Songs/>}/>
               <Route path="/topics" element={<Topics/>}/>
               <Route path="/roles" element={<Roles/>}/>

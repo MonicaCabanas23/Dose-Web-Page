@@ -2,20 +2,20 @@
 
 .BgImage {
     background-image: url("./../../assets/Background_Image.png");
-    background-repeat: no-repeat;
     filter:blur(8px);
     -webkit-filter: blur(8px);
     flex: 1;    
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;    
+    background-size: cover;
+    position: absolute;
+    height: calc(100% - 2.75rem - 2.75rem);
+    width: calc(100% - 4.125rem - 4.125rem);
+    z-index: 1;
 }
 
 .Home {
-    transform: translate(-16%,-50%);
-    top: 50%;
-    left: 50%;
-    position: absolute;
+    z-index: 2;
     flex: 1;
     display: flex;
     justify-content: center;
@@ -39,5 +39,12 @@
             font-size: 1.75rem;
             font-family: 'Barlow Condensed', sans-serif;
         }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .BgImage {
+        height: 100%;
+        width: 100%;
     }
 }
