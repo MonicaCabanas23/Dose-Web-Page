@@ -2,8 +2,7 @@ import classes from './NoAuthLayout.module.scss';
 import logo from './../../assets/logo.png';
 import { Outlet } from "react-router-dom";
 
-export const NoAuthLayout = ({scrollTop}) => {
-    console.log(scrollTop);
+export const NoAuthLayout = ({scrollTop}) => {    
     return (
         <>
             <header className={ scrollTop >= 25 ? [classes["Header"], classes["Scrolled"]].join(" ") : classes["Header"] }>
@@ -11,7 +10,7 @@ export const NoAuthLayout = ({scrollTop}) => {
                     <img src={logo}/> <h1>MINGO</h1>
                 </div>
                 <button className={ classes["Button"] }>
-                    Logout
+                    Let’s get started
                 </button>
             </header>
             <main className={ classes["Main"] }>
