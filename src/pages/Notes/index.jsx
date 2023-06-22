@@ -6,6 +6,7 @@ import { Modal } from '../../components/Modal/Modal';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Outlet, useOutlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const Notes = () => {
     const [data, setData] = useState([]);
@@ -60,7 +61,13 @@ export const Notes = () => {
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -77,19 +84,34 @@ export const Notes = () => {
                 "Authorization": `bearer ${useAuth().token}`
             }
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
             setShowDelete(false);
             fetchNotes();
-            alert("Nota eliminado");
+
+            toast.success("Nota eliminada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+            
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 

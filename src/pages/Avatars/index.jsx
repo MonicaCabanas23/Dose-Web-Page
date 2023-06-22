@@ -7,7 +7,8 @@ import { ImageUploader } from '../../components/ImageUploader/ImageUploader';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject} from "firebase/storage";
 import storage from '../../hooks/useFirebase';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export const Avatars = () => {
     const [showEdit, setShowEdit] = useState(false);
@@ -46,7 +47,13 @@ export const Avatars = () => {
 
     const updateAvatar = async (imageUrl) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -58,34 +65,55 @@ export const Avatars = () => {
         const token = dataStorage.token
 
         
-        // Update the avatar with the new image
-        try {
-            fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
-                method: "PUT",
-                crossDomain:true,
-                headers: {
-                    "Content-Type" : "application/json",
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*", 
-                    "Authorization": `bearer ${token}`
-                },
-                body: JSON.stringify({
-                    "picture": `${imageUrl}`
-                })  
-            })
-            .then((response) => {
-                response.json();
-                setShowEdit(false);
-                getAvatars();
-            })
-        } catch(error) {
-            console.log(error)
-        }
+        // Update the avatar with the new image        
+        fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
+            method: "PUT",
+            crossDomain:true,
+            headers: {
+                "Content-Type" : "application/json",
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*", 
+                "Authorization": `bearer ${token}`
+            },
+            body: JSON.stringify({
+                "picture": `${imageUrl}`
+            })  
+        })
+        .then((response) => {
+            response.json().then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                toast.success("Avatar modificado!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success Modify",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
+            });            
+            setShowEdit(false);
+            getAvatars();
+        }).catch((error) => {
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+        });       
     }
 
     const deleteAvatar = async () => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -96,65 +124,99 @@ export const Avatars = () => {
         const dataStorage = useAuth()
         const token = dataStorage.token
 
-
         // Delete Avatar
-        try {
-            fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
-                method: "DELETE",
-                crossDomain:true,
-                headers: {
-                    "Content-Type" : "application/json",
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*", 
-                    "Authorization": `bearer ${token}`
+        fetch(`https://api.mingo.studio/api/avatar/${selectedAvatar._id}`, {
+            method: "DELETE",
+            crossDomain:true,
+            headers: {
+                "Content-Type" : "application/json",
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*", 
+                "Authorization": `bearer ${token}`
+            }
+        })
+        .then((response) => {
+            response.json().then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
                 }
-            })
-            .then((response) => {
-                response.json();
-                setShowDelete(false);
-                getAvatars();
-            })
-
-        } catch(error) {
-            console.log(error)
-        }
+                toast.success("Avatar eliminado!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success Delete",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
+            });
+            setShowDelete(false);
+            getAvatars();
+        }).catch((error) => {
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+        });
     }
 
     // Add Avatar
     const addAvatar = (imageUrl) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         // Get token from localstorage
         const dataStorage = useAuth()
         const token = dataStorage.token
-
-        try {
-            fetch("https://api.mingo.studio/api/avatar", {
-                method: "POST",
-                crossDomain:true,
-                headers: {
-                    "Content-Type" : "application/json",
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*", 
-                    "Authorization": `bearer ${token}`
-                }, 
-                body: JSON.stringify({
-                    "picture": `${imageUrl}`
-                })
+    
+        fetch("https://api.mingo.studio/api/avatar", {
+            method: "POST",
+            crossDomain:true,
+            headers: {
+                "Content-Type" : "application/json",
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*", 
+                "Authorization": `bearer ${token}`
+            }, 
+            body: JSON.stringify({
+                "picture": `${imageUrl}`
             })
-            .then((response) => {
-                response.json();
-                setShowDelete(false);
-                getAvatars();
-            })
-            .cath((error) => console.log(error));
+        })
+        .then((response) => {
+            response.json().then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
 
-        } catch(error) {
-            console.log(error)
-        }
+                toast.success("Avatar agregado!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success Add",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
+            });            
+            setShowDelete(false);
+            getAvatars();
+        })
+        .catch((error) => {
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+        });
     }
 
     // Delete fron Firebase
@@ -163,10 +225,15 @@ export const Avatars = () => {
         const storageRef = ref(storage, urlRef)
 
         // Delete the image
-        deleteObject(storageRef).then(() => {
-            console.log("Se eliminó de firebase")
+        deleteObject(storageRef).then(() => {            
         }).catch((error) => {
-            console.log(error)
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         })
     }
 
@@ -174,7 +241,13 @@ export const Avatars = () => {
     const uploadToFirebase = async (images) => {
         // images is an array which has data_url and the file
         if(!images || images.length <= 0) {
-            alert("Please select an image")
+            toast.warn("Seleccione una imagen", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Image Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 

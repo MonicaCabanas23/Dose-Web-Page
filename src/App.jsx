@@ -1,8 +1,10 @@
 import classes from'./App.module.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 import React from "react";
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate  } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Topics, Users } from "./pages";
@@ -18,6 +20,7 @@ function App() {
   
   return (
     <div className={classes["App"]} onScroll={handleScroll}>
+      <ToastContainer limit={3}/>
       <BrowserRouter>
         <Routes>
           <Route element={<NoAuthLayout scrollTop={scrollTop}/>}>
