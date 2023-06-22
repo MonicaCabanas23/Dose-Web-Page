@@ -109,7 +109,7 @@ export const Chord = () => {
             return;
         }
         
-        fetch(`https://api.mingo.studio/api/musicalNote/`, {
+        fetch(`https://api.mingo.studio/api/chord/`, {
             method:"POST",
             crossDomain:true,
             headers:{
@@ -139,12 +139,7 @@ export const Chord = () => {
     }
 
     const uploadImagesToFirebase = async (images) => {
-        // images is an array which has data_url and the file        
-        if (info.name === undefined || (!bass && !treble)) {
-            alert("no");
-            return;
-        }
-
+        // images is an array which has data_url and the file       
         if(images.length === 0) {
             alert("Please select an image")
             return;

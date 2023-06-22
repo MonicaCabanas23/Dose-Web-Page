@@ -68,7 +68,7 @@ export const Chords = () => {
         e.preventDefault();
         e.target.disabled = true;
 
-        fetch(`https://api.mingo.studio/api/musicalNote/${deleteElement.id}`, {
+        fetch(`https://api.mingo.studio/api/chord/${deleteElement.id}`, {
             method:"DELETE",
             crossDomain:true,
             headers:{
