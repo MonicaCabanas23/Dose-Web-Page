@@ -12,9 +12,8 @@ import { MainLayout } from "./layouts/MainLayout/MainLayout";
 function App() {
   const [scrollTop, setScrollTop] = useState(0);
   
-  const handleScroll = (event) => {
-    console.log(scrollTop);
-      setScrollTop(event.currentTarget.scrollTop);
+  const handleScroll = (event) => {    
+    setScrollTop(event.currentTarget.scrollTop);
   };
   
   return (

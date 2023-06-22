@@ -9,7 +9,10 @@ export const NoAuthLayout = ({scrollTop}) => {
             <header className={ scrollTop >= 25 ? [classes["Header"], classes["Scrolled"]].join(" ") : classes["Header"] }>
                 <div className={ classes["Logo"] }>
                     <img src={logo}/> <h1>MINGO</h1>
-                </div>                
+                </div>
+                <button className={ classes["Button"] }>
+                    Logout
+                </button>
             </header>
             <main className={ classes["Main"] }>
                 <Outlet/>
