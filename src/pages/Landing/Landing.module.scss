@@ -1,0 +1,153 @@
+@import './../../variables';
+
+.Section {
+    background-image: url("./../../assets/Background_Image.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-inline: 5rem;
+    padding-block: 10rem 5rem;
+    justify-content: space-between;
+    height: 100vh;
+
+    > .Image {
+        height: 100%;
+        max-width: 43rem;
+        > img {
+            width: 100%;
+            max-width: 26.5625rem;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    > .Text {
+        max-width: 43rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+
+        > h1 {
+            text-align: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 4rem;
+        }
+
+        > p {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.875rem;
+        }
+    }
+
+    @media only screen and (max-width: 1240px) {
+        > .Text {
+            max-width: 30rem;
+            
+            > h1 {
+                text-align: center;
+                font-family: 'Barlow Condensed', sans-serif;
+                font-size: 3rem;
+            }
+    
+            > .p {
+                text-align: center;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 950px) {
+        > .Text {
+            max-width: 20rem;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        flex-direction: column;
+        min-height: 100vh;
+        height: unset;
+        gap: 2rem
+    }
+}
+
+.Footer {
+    min-height: 28.125rem;
+    background-color: $dark-primary-color;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem;
+    gap: 3.4375rem;
+    font-family: 'Barlow Condensed', sans-serif;
+
+    > h1 {        
+        text-align: center;        
+        font-size: 4rem;
+        z-index: 2;
+    }
+
+    > .Reasons {
+        z-index: 2;
+        display: flex;
+        max-width: 90rem;
+        gap: 2.5rem;
+        
+        > .Reason {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            
+            > .Icon {
+                > svg {
+                    font-size: 2.5rem;                    
+                }
+            }
+
+            > .Reason-Body {
+                display: flex;
+                gap: 1rem;
+                flex-direction: column;
+                > h2 {
+                    font-size: 2.25rem;                    
+                }
+
+                > p {
+                    font-family: 'Montserrat', sans-serif;
+                    font-size: 1.375rem;
+                }
+            }
+        }
+    }
+
+    > .Ellipse {
+        position: absolute;
+
+        &.Ellipse-1 {
+            left: 0;
+            top: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        &.Ellipse-2 {
+            right: 0;
+            bottom: 0;
+            transform: translate(50%, 50%);
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        > .Reasons {
+            flex-direction: column;
+        }
+    }
+}
