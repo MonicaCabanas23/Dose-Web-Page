@@ -4,8 +4,8 @@ import { Card } from '../../components/Card/Card';
 import { Table } from '../../components/Table/Table';
 import { Modal } from '../../components/Modal/Modal';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Outlet, useOutlet } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet, useOutlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const Intervals = () => {
     const [data, setData] = useState([]);
@@ -53,14 +53,20 @@ export const Intervals = () => {
         setShowDelete(!showDelete);
         
         setDeleteElement({
-                id: Interval._id,
-                interavl: Interval.name
+            id: Interval._id,
+            interavl: Interval.name
         });        
     }
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -77,19 +83,34 @@ export const Intervals = () => {
                 "Authorization": `bearer ${useAuth().token}`
             }
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
             setShowDelete(false);
             fetchIntervals();
-            alert("Intervalo eliminado");
+
+            toast.success("Intervalo eliminado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 

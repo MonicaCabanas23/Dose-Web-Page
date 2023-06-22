@@ -6,7 +6,7 @@ import { Modal } from '../../components/Modal/Modal';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Outlet, useOutlet } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 
 export const Chords = () => {
     const [data, setData] = useState([]);
@@ -61,14 +61,20 @@ export const Chords = () => {
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         e.preventDefault();
         e.target.disabled = true;
 
-        fetch(`https://api.mingo.studio/api/musicalNote/${deleteElement.id}`, {
+        fetch(`https://api.mingo.studio/api/chord/${deleteElement.id}`, {
             method:"DELETE",
             crossDomain:true,
             headers:{
@@ -78,19 +84,34 @@ export const Chords = () => {
                 "Authorization": `bearer ${useAuth().token}`
             }
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
             setShowDelete(false);
             fetchChords();
-            alert("Acorde eliminado");
+
+            toast.success("Acorde eliminado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
     

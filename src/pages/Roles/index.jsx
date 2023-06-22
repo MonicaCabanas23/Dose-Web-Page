@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Card } from '../../components/Card/Card';
 import { Input } from '../../components/Input/Input';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 import { BiEditAlt, BiTrash } from 'react-icons/bi';
 import { MdAdd } from 'react-icons/md';
@@ -78,12 +79,24 @@ export const Roles = () => {
 
     const handleEditClickSubmit = (e) => {
         if (inputs.type === "") {            
-            alert("No");
+            toast.error("Ingrese el nombre del tipo de usuario!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -103,25 +116,45 @@ export const Roles = () => {
             }),
         })
         .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
             return res.json();
         }).then((data) => {
+            if (!data.error) {
+                throw new Error(data.error);
+            }
+            
             setShowEdit(false);
             setInputs({});
             fetchRoles();
+            toast.success("Rol modificado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success Modify",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+            
             e.target.disabled = false;
-            alert("Rol modificado");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -139,29 +172,56 @@ export const Roles = () => {
             }
         })
         .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
             return res.json();
         }).then((data) => {
-            setShowDelete(false);            
+            if (!data.error) {
+                throw new Error(data.error);
+            }
+
+            setShowDelete(false);
             fetchRoles();
-            alert("Rol eliminado");
+            
+            toast.success("Rol eliminado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success Delete",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
     const handleAddClickSubmit = (e) => {
         if (inputs.type === "") {            
-            alert("No");
+            toast.error("Ingrese el nombre del tipo de usuario!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -180,20 +240,35 @@ export const Roles = () => {
                 type: inputs.type,                
             }),
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
+            if (!data.error) {
+                throw new Error(data.error);
+            }
+
             setShowAdd(false);
             setInfo({});
             fetchRoles();
+
+            toast.success("Rol agregado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success Add",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
-            alert("Rol Agregado");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
