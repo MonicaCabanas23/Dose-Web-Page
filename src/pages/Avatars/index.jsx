@@ -74,8 +74,9 @@ export const Avatars = () => {
                 })  
             })
             .then((response) => {
-                response.json()
-                setShowEdit(false)
+                response.json();
+                setShowEdit(false);
+                getAvatars();
             })
         } catch(error) {
             console.log(error)
@@ -109,8 +110,9 @@ export const Avatars = () => {
                 }
             })
             .then((response) => {
-                response.json()
-                setShowDelete(false)
+                response.json();
+                setShowDelete(false);
+                getAvatars();
             })
 
         } catch(error) {
@@ -144,8 +146,9 @@ export const Avatars = () => {
                 })
             })
             .then((response) => {
-                response.json()
-                setShowDelete(false)
+                response.json();
+                setShowDelete(false);
+                getAvatars();
             })
             .cath((error) => console.log(error));
 
