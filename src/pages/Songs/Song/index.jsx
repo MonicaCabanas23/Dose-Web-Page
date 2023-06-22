@@ -18,7 +18,7 @@ export const Song = () => {
         picture: [], 
         mp3: "",
         author: "",
-        ppm: 1, 
+        ppm: "", 
     });
     const navigate = useNavigate();
     

@@ -3,21 +3,30 @@ import ImageUploading from 'react-images-uploading';
 import { useEffect, useState } from 'react';
 import { ItemButton } from "../Buttons/ItemButton/ItemButton";
 
-export const ImageUploader = ({item, handleSaveClick, number}) => {
+export const ImageUploader = ({item=false, handleSaveClick, number}) => {
     const [images, setImages] = useState([]);
     const maxNumber = number;
 
     useEffect(() => {
-      if(item) {
-        // Our items will have only one picture, therefore this will not crash
-        // However if an item comes with several pictures or the field is not called 'picture', it may crash
+      if(item && item.picture) {
+        // If there are several images
+        if(Array.isArray(item.picture)) {
+          const imagesArray = item.picture.map((picture) => {
+            return {
+              "data_url": picture,
+              "file": picture
+            }
+          })
+          setImages(imagesArray)
+          return
+        }
+
+        // If there is only one image
         const imageObject = {
           "data_url": item.picture,
           "file": item.picture
         }
-        const imagesArray = [imageObject]
-        
-        setImages(imagesArray)
+        setImages([imageObject])
       }
     }, [])
     
@@ -53,17 +62,19 @@ export const ImageUploader = ({item, handleSaveClick, number}) => {
               Click or Drop here
             </button>
             &nbsp;
-            {imageList.map((image, index) => (
-              <div key={index} className={classes["image-item"]}>
-                <div className={classes["picture"]}>
-                  <img src={image['data_url']} alt="" width="100" />
+            <div className={classes["items-container"]}>
+              {imageList.map((image, index) => (
+                <div key={index} className={classes["image-item"]}>
+                  <div className={classes["picture"]}>
+                    <img src={image['data_url']} alt="" width="100" />
+                  </div>
+                  <div className={classes["image-item__btn-wrapper"]}>
+                    <ItemButton clickHandler={() => {onImageUpdate(index)}} icon="edit"/>
+                    <ItemButton clickHandler={() => {onImageRemove(index)}} icon="delete"/>
+                  </div>
                 </div>
-                <div className={classes["image-item__btn-wrapper"]}>
-                  <ItemButton clickHandler={() => {onImageUpdate(index)}} icon="edit"/>
-                  <ItemButton clickHandler={() => {onImageRemove(index)}} icon="delete"/>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
             <div className={classes["button_container"]}>
               <button className={classes["save_button"]} onClick={() => {handleSaveClick(images)}}>Save</button>
             </div>
