@@ -4,7 +4,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Topics, Users, Song } from "./pages";
+import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Topics, Users } from "./pages";
 import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
@@ -33,7 +33,7 @@ function App() {
                 <Route path="interval/:id" element={<Interval/>}/>
               </Route>
               <Route path="/songs" element={<Songs/>}>
-                <Route path='song' element={<Song/>}/>
+                <Route path="song" element={<Song/>}/>
                 <Route path="song/:id" element={<Song/>}/>
               </Route>
               <Route path="/topics" element={<Topics/>}/>
