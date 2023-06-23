@@ -6,9 +6,10 @@ import { Navigation } from '../../core/containers/Menu/Menu';
 import { Header } from '../../components/Header/Header';
 
 import { useValidateToken } from '../../hooks/useAuth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const MainLayout = () => {
+    const [menuState, setMenuState] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
         if (!useValidateToken()) {
@@ -16,11 +17,15 @@ export const MainLayout = () => {
         }
     })
 
+    const changeMenuState = () => {
+        setMenuState(!menuState);
+    }
+
     return (
         <>
-            <Header/>
+            <Header menuEvent={changeMenuState}/>
             <div className={ classes["MainLayout"] }>
-                <Navigation/>
+                <Navigation menuState={menuState}/>
                 <main>
                     <Outlet/>
                 </main>

@@ -1,6 +1,7 @@
 import classes from './Chord.module.scss';
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 import { Input } from '../../../components/Input/Input';
 import { ImageUploader } from '../../../components/ImageUploader/ImageUploader';
@@ -11,9 +12,7 @@ import storage from '../../../hooks/useFirebase';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
 
 export const Chord = () => {
-    const {id} = useParams();
-    const [treble, setTreble] = useState(false);
-    const [bass, setBass] = useState(false);    
+    const {id} = useParams();    
     const [data, setData] = useState({});
     const [info, setInfo] = useState({
         name: "",
@@ -72,7 +71,13 @@ export const Chord = () => {
 
     const handleEditChord = () => {
         if (!info.name || !info.mp3 || !info.picture) {
-            alert("Alert");
+            toast.warn("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Info Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -90,26 +95,45 @@ export const Chord = () => {
                 mp3: info.mp3
             }),
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
-            alert("Acorde modificado");
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            toast.success("Acorde modificado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }    
 
     const handleAddChord = () => {  
         if (!info.name || !info.picture || !info.mp3) {
-            alert("Alert");
+            toast.warn("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Info Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
         
-        fetch(`https://api.mingo.studio/api/musicalNote/`, {
+        fetch(`https://api.mingo.studio/api/chord/`, {
             method:"POST",
             crossDomain:true,
             headers:{
@@ -125,28 +149,53 @@ export const Chord = () => {
             }),
         })
         .then((res) => {
-            if (!res.ok) {
-                return res.text().then(text => { throw new Error(text) })
-            }
             return res.json();
         }).then((data) => {
-            alert("Acorde Agregado");
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            toast.success("Acorde agregado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             navigate("/chords");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
     const uploadImagesToFirebase = async (images) => {
-        // images is an array which has data_url and the file        
-        if (info.name === undefined || (!bass && !treble)) {
-            alert("no");
+        if (info.name === undefined || info.name === "") {
+            toast.warn("Ingrese el nombre del acorde!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Name Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
-
+        
+        // images is an array which has data_url and the file       
         if(images.length === 0) {
-            alert("Please select an image")
+            toast.warn("Seleccione una imagen", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Image Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -162,32 +211,39 @@ export const Chord = () => {
                         ...existingValues,
                         picture: `${url}`
                     }));
-
-                    alert("modificado");
                 }
                 else {
                     setInfo(existingValues => ({
                         ...existingValues,
                         picture: `${url}`
                     }));
-
-                    alert("agregado");
                 }
             });
         });
     }
 
-    const uploadAudioToFirebase = async (audio) => {
-        // images is an array which has data_url and the file        
-        if (info.name === undefined) {
-            alert("no");
+    const uploadAudioToFirebase = async (audio) => {        
+        if (info.name === undefined || info.name === "") {
+            toast.warn("Ingrese el nombre del acorde!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Name Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
                 
         if(audio.length === 0) {
-            alert("Please select an audio file")
+            toast.warn("Seleccione un archivo de audio!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Audio Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
-        }        
+        }
 
         // Gets the storage location to save the image
         const storageRef = ref(storage, `/mingo-chords-mp3/${audio[0].name}`)
@@ -201,16 +257,12 @@ export const Chord = () => {
                         ...existingValues,
                         mp3: `${url}`
                     }));
-
-                    alert("modificado");
                 }
                 else {
                     setInfo(existingValues => ({
                         ...existingValues,
                         mp3: `${url}`
                     }));
-
-                    alert("agregado");
                 }
             });
         });

@@ -1,7 +1,10 @@
 import classes from'./App.module.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate  } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Topics, Users } from "./pages";
@@ -9,13 +12,20 @@ import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
 function App() {
+  const [scrollTop, setScrollTop] = useState(0);
+  
+  const handleScroll = (event) => {    
+    setScrollTop(event.currentTarget.scrollTop);
+  };
+  
   return (
-    <div className={classes["App"]}>
+    <div className={classes["App"]} onScroll={handleScroll}>
+      <ToastContainer limit={3}/>
       <BrowserRouter>
         <Routes>
-          <Route element={<NoAuthLayout/>}>
+          <Route element={<NoAuthLayout scrollTop={scrollTop}/>}>
             <Route index element={<Landing/>}/>
-            <Route path="/landing" element={<Landing/>}/>
+            <Route path="/landing" element={<Navigate to="/"/>}/>
           </Route>
           <Route element={<ProtectedRoute/>}>
             <Route element={<MainLayout/>}>

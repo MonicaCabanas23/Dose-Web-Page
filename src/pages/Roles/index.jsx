@@ -4,23 +4,27 @@ import { useEffect, useState } from 'react';
 import { Card } from '../../components/Card/Card';
 import { Input } from '../../components/Input/Input';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 import { BiEditAlt, BiTrash } from 'react-icons/bi';
 import { MdAdd } from 'react-icons/md';
 import { Cards } from '../../components/Card/Cards/Cards';
 import { Modal } from '../../components/Modal/Modal';
+import { TailSpin } from 'react-loader-spinner';
 
 export const Roles = () => {
     const [data, setData] = useState([]);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [info, setInfo] = useState({});
     const [inputs, setInputs] = useState({
         type: ""
     });
 
     const fetchRoles = () => {
+        setLoading(true);
         return fetch("https://api.mingo.studio/api/userType/", {
             method: "GET",
             crossDomain:true,
@@ -32,7 +36,8 @@ export const Roles = () => {
         })
         .then(
             response => response.json().then(data => {
-                setData(data);                
+                setData(data);
+                setLoading(false);
             })
         ).catch(() => {            
         })
@@ -77,13 +82,25 @@ export const Roles = () => {
     }
 
     const handleEditClickSubmit = (e) => {
-        if (inputs.type === "") {            
-            alert("No");
+        if (inputs.type === "") {
+            toast.error("Ingrese el nombre del tipo de usuario!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -103,25 +120,45 @@ export const Roles = () => {
             }),
         })
         .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
             return res.json();
         }).then((data) => {
+            if (data.error) {                
+                throw new Error(data.error);
+            }
+            
             setShowEdit(false);
             setInputs({});
             fetchRoles();
+            toast.success("Rol modificado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success Modify",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+            
             e.target.disabled = false;
-            alert("Rol modificado");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -139,29 +176,56 @@ export const Roles = () => {
             }
         })
         .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
             return res.json();
         }).then((data) => {
-            setShowDelete(false);            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            setShowDelete(false);
             fetchRoles();
-            alert("Rol eliminado");
+            
+            toast.success("Rol eliminado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success Delete",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
     const handleAddClickSubmit = (e) => {
         if (inputs.type === "") {            
-            alert("No");
+            toast.error("Ingrese el nombre del tipo de usuario!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -180,20 +244,35 @@ export const Roles = () => {
                 type: inputs.type,                
             }),
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
             setShowAdd(false);
             setInfo({});
             fetchRoles();
+
+            toast.success("Rol agregado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success Add",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
-            alert("Rol Agregado");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
@@ -206,44 +285,62 @@ export const Roles = () => {
 
     return (
         <Card flex="true">
-            {data.map(
-                roles => {
-                    return (
-                        <Cards key={roles._id}>
-                            <div>
-                                <span className={ classes["Span"] }>Role: </span><span className={ [classes["Span"], classes["Role-name"]].join(" ") }>{roles.type}</span>
-                            </div>
-                            <div className={ classes['Actions'] }>
-                                <button onClick={handleClickEdit} id="edit" data-id={roles._id} data-type={roles.type}><BiEditAlt/></button>
-                                <button onClick={handleClickDelete} id="delete" data-id={roles._id} data-type={roles.type}><BiTrash/></button>
-                            </div>
-                        </Cards>
-                    );
-                }
-            )}
-
-            <Modal handleClickOpen={handleClickEdit} show={showEdit}>
-                <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Edit - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{info.type}</span></div>
-                <Input id="fEdit" handleInput={setType} name="Edit" value={inputs.type} type="text"/>
-                <button className={ classes['SaveButton'] } onClick={handleEditClickSubmit}>Edit</button>
-            </Modal>
-
-            <Modal handleClickOpen={handleClickDelete} show={showDelete} w="27.5rem" h="15rem">
-                <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{info.type}</span></div>
-                <div className={ classes["ButtonContainer"] }>
-                    <button className={ classes['SaveButton'] } onClick={handleDeleteClickSubmit}>Delete</button>
+            {
+                loading ? 
+                <div className={ classes["Loader-container"] }>
+                    <TailSpin
+                        height="80"
+                        width="80"
+                        color="#FFC107"
+                        ariaLabel="tail-spin-loading"
+                        radius="1"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    />
                 </div>
-            </Modal>
-
-            <Modal handleClickOpen={handleClickAdd} show={showAdd}>
-                <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Add Role</span></div>
-                <Input id="fAdd" handleInput={setType} name="Add" value={inputs.type} type="text"/>
-                <button className={ classes['SaveButton'] } onClick={handleAddClickSubmit}>Add</button>
-            </Modal>
-
-            <Cards add="true" onClick={handleClickAdd}>
-                <MdAdd/>
-            </Cards>
+                :
+                <>
+                {data.map(
+                    roles => {
+                        return (
+                            <Cards key={roles._id}>
+                                <div>
+                                    <span className={ classes["Span"] }>Role: </span><span className={ [classes["Span"], classes["Role-name"]].join(" ") }>{roles.type}</span>
+                                </div>
+                                <div className={ classes['Actions'] }>
+                                    <button onClick={handleClickEdit} id="edit" data-id={roles._id} data-type={roles.type}><BiEditAlt/></button>
+                                    <button onClick={handleClickDelete} id="delete" data-id={roles._id} data-type={roles.type}><BiTrash/></button>
+                                </div>
+                            </Cards>
+                        );
+                    }
+                )}                
+    
+                <Modal handleClickOpen={handleClickEdit} show={showEdit}>
+                    <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Edit - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{info.type}</span></div>
+                    <Input id="fEdit" handleInput={setType} name="Edit" value={inputs.type} type="text"/>
+                    <button className={ classes['SaveButton'] } onClick={handleEditClickSubmit}>Edit</button>
+                </Modal>
+    
+                <Modal handleClickOpen={handleClickDelete} show={showDelete} w="27.5rem" h="15rem">
+                    <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{info.type}</span></div>
+                    <div className={ classes["ButtonContainer"] }>
+                        <button className={ classes['SaveButton'] } onClick={handleDeleteClickSubmit}>Delete</button>
+                    </div>
+                </Modal>
+    
+                <Modal handleClickOpen={handleClickAdd} show={showAdd}>
+                    <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Add Role</span></div>
+                    <Input id="fAdd" handleInput={setType} name="Add" value={inputs.type} type="text"/>
+                    <button className={ classes['SaveButton'] } onClick={handleAddClickSubmit}>Add</button>
+                </Modal>
+    
+                <Cards add="true" onClick={handleClickAdd}>
+                    <MdAdd/>
+                </Cards>
+                </>
+            }            
         </Card>
     )
 }

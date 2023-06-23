@@ -3,24 +3,28 @@ import { useState } from 'react';
 import { BiEditAlt, BiTrash, BiAddToQueue } from 'react-icons/bi';
 import { AiOutlineReload } from 'react-icons/ai';
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from 'react-icons/md';
+import { TailSpin } from 'react-loader-spinner';
 
-export const Table = ({info = [], reloadClick, addClick, editClick, deleteClick}) => {
+export const Table = ({info = [], reloadClick, addClick, editClick, deleteClick, generateActions=true, allowAddEdit=true, isLoading=true}) => {
     const [current, setCurrent] = useState(0);
     const [last, setLast] = useState(10)
     const [offset, setOffset] = useState(10);
 
-
     const tableInfo = info.slice(current, last).map(info => {
         return (
             <div className={ classes['Table-Row'] } key={info._id}>
-                <div className={ classes['Table-Column'] } style={{ "--gap": "1rem"}}>
-                    <input type="checkbox"/>
+                <div className={ classes['Table-Column'] } style={{ "--gap": "1rem"}}>                    
                     <span>{info.name}</span>
                 </div>
-                <div className={ [ classes['Table-Column'], classes['Icons']].join(" ") } style={{ "--gap": "3rem" }}>
-                    <BiEditAlt onClick={e => editClick(info._id)}/>
-                    <BiTrash onClick={() => {deleteClick(info)}}/>
-                </div>
+                {generateActions &&
+                    <div className={ [ classes['Table-Column'], classes['Icons']].join(" ") } style={{ "--gap": "3rem" }}>
+                        {allowAddEdit &&
+                            <BiEditAlt onClick={e => editClick(info._id)}/>
+                        }
+                        <BiTrash onClick={() => {deleteClick(info)}}/>
+                    </div>
+                }
+                
             </div>
         )
     })
@@ -44,10 +48,11 @@ export const Table = ({info = [], reloadClick, addClick, editClick, deleteClick}
     return (
         <div className={ classes['Table'] }>
             <div className={ classes['Table-Header'] }>
-                <div className={ classes['Table-Header-Actions'] } style={{ "--gap": "2rem" }}>
-                    <input type="checkbox"/>
+                <div className={ classes['Table-Header-Actions'] } style={{ "--gap": "2rem" }}>                    
                     <AiOutlineReload onClick={reloadClick}/>
-                    <BiAddToQueue onClick={addClick}/>
+                    { allowAddEdit &&
+                        <BiAddToQueue onClick={addClick}/>
+                    }
                 </div>
                 <div className={ classes['Table-Header-Pagination'] } style={{ "---gap": "2rem" }}>
                     {current + 1} - {last > info.length ? info.length : last} de {info.length}
@@ -55,7 +60,25 @@ export const Table = ({info = [], reloadClick, addClick, editClick, deleteClick}
                     <MdOutlineArrowForwardIos onClick={upPage}/>
                 </div>
             </div>
-            {tableInfo}            
+            {
+                isLoading ? 
+                <div className={ classes["Loader-container"] }>
+                    <TailSpin
+                        height="80"
+                        width="80"
+                        color="#FFC107"
+                        ariaLabel="tail-spin-loading"
+                        radius="1"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    />
+                </div>
+                :
+                <>
+                    {tableInfo}
+                </>
+            }
         </div>
     )
 }

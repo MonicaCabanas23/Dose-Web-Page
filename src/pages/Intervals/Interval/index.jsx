@@ -1,6 +1,7 @@
 import classes from './Interval.module.scss';
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 import { Input } from '../../../components/Input/Input';
 import { AudioUploader } from '../../../components/AudioUploader/AudioUploader';
@@ -27,11 +28,11 @@ export const Interval = () => {
                 Accept: "application/json",
                 "Access-Control-Allow-Origin": "*",
                 "Authorization": `Bearer ${useAuth().token}`
-            }            
+            }
         })
         .then(
             response => response.json().then(data => {
-                setData(data);                
+                setData(data);
             })
         ).catch(() => {
         })
@@ -39,7 +40,7 @@ export const Interval = () => {
 
     const setDataInfo = () => {
         setInfo({
-            name: data.name,            
+            name: data.name,
             mp3: data.mp3
         });
     }
@@ -67,8 +68,14 @@ export const Interval = () => {
 
     const handleEditInterval = () => {
         if (!info.name || !info.mp3) {
-            alert("Alert");
-            return;
+            toast.warn("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Info Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+            return;            
         }
 
         fetch(`https://api.mingo.studio/api/interval/${id}`, {
@@ -80,26 +87,45 @@ export const Interval = () => {
                 "Access-Control-Allow-Origin": "*",
                 "Authorization": `bearer ${useAuth().token}`
             },
-            body: JSON.stringify({                
+            body: JSON.stringify({
                 mp3: info.mp3
             }),
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
-            alert("Intervalo modificada");
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            toast.success("Intervalo modificado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }    
 
-    const handleAddInterval = () => {  
+    const handleAddInterval = () => {
         if (!info.name || !info.mp3) {
-            alert("Alert");
+            toast.warn("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Info Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
         
@@ -113,35 +139,60 @@ export const Interval = () => {
                 "Authorization": `bearer ${useAuth().token}`
             },
             body: JSON.stringify({
-                name: info.name,                
+                name: info.name,
                 mp3: info.mp3,
             }),
         })
         .then((res) => {
-            if (!res.ok) {
-                return res.text().then(text => { throw new Error(text) })
-            }
             return res.json();
         }).then((data) => {
-            alert("Intervalo Agregada");
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            toast.success("Intervalo agregado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             navigate("/intervals");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }    
 
-    const uploadAudioToFirebase = async (audio) => {
-        // images is an array which has data_url and the file        
-        if (info.name === undefined) {
-            alert("Please fill the name first");
+    const uploadAudioToFirebase = async (audio) => {        
+        if (info.name === undefined || info.name === "") {
+            toast.warn("Ingrese el nombre del intervalo!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Name Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
                 
         if(audio.length === 0) {
-            alert("Please select an audio file")
+            toast.warn("Seleccione un archivo de audio!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Audio Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
-        }        
+        }
 
         // Gets the storage location to save the image
         const storageRef = ref(storage, `/mingo-intervals-mp3/${audio[0].name}`)
@@ -154,30 +205,26 @@ export const Interval = () => {
                     setInfo(existingValues => ({
                         ...existingValues,
                         mp3: `${url}`
-                    }));
-
-                    alert("modificado");
+                    }));                    
                 }
                 else {
                     setInfo(existingValues => ({
                         ...existingValues,
                         mp3: `${url}`
-                    }));
-
-                    alert("agregado");
+                    }));                    
                 }
             });
         });
     }
 
 
-    return (        
+    return (
         <div className={ classes["Interval"] }>
             <div className={ classes['Header'] }>
                 <div className={ classes['Header-Title'] }>
                     <MdOutlineArrowBackIos onClick={goBack}/>
                     <span>{id ? data.name : "Add"}</span>
-                </div>                
+                </div>
                 <div className={ classes['Header-Actions'] }>
                     <span onClick={id ? handleEditInterval : handleAddInterval}><u>{id ? "Edit" : "Save"}</u></span>
                 </div>
@@ -193,6 +240,6 @@ export const Interval = () => {
                     <AudioUploader handleSaveClick={uploadAudioToFirebase} value={id ? info.mp3 : null}/>
                 </div>
             </div>
-        </div>        
+        </div>
     )
 }

@@ -6,17 +6,20 @@ import { Modal } from '../../components/Modal/Modal';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Outlet, useOutlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const Notes = () => {
     const [data, setData] = useState([]);
     const [showDelete, setShowDelete] = useState(false);
     const [deleteElement, setDeleteElement] = useState({});
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const location = useLocation()
     const outlet = useOutlet();
 
     const fetchNotes = () => {
         setData([]);
+        setLoading(true);
         return fetch("https://api.mingo.studio/api/musicalNote/", {
             method: "GET",
             crossDomain:true,
@@ -30,6 +33,7 @@ export const Notes = () => {
         .then(
             response => response.json().then(data => {
                 setData(data);
+                setLoading(false);
             })
         ).catch(() => {
         })
@@ -60,7 +64,13 @@ export const Notes = () => {
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesion expirada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -77,19 +87,34 @@ export const Notes = () => {
                 "Authorization": `bearer ${useAuth().token}`
             }
         })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
+        .then((res) => {            
             return res.json();
         }).then((data) => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
             setShowDelete(false);
             fetchNotes();
-            alert("Nota eliminado");
+
+            toast.success("Nota eliminada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+            
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
@@ -102,7 +127,7 @@ export const Notes = () => {
                 </Card> 
                 : 
                 <Card>
-                    <Table info={data} reloadClick={fetchNotes} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal}/>
+                    <Table info={data} reloadClick={fetchNotes} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal} isLoading={loading}/>
                     <Modal handleClickOpen={openDeleteModal} show={showDelete} w="27.5rem" h="15rem">
                         <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{deleteElement.note}</span></div>
                         <div className={ classes["ButtonContainer"] }>

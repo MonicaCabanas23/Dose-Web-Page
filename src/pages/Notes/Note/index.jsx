@@ -1,6 +1,7 @@
 import classes from './Note.module.scss';
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 import { Input } from '../../../components/Input/Input';
 import { ImageUploader } from '../../../components/ImageUploader/ImageUploader';
@@ -31,7 +32,7 @@ export const Note = () => {
                 Accept: "application/json",
                 "Access-Control-Allow-Origin": "*",
                 "Authorization": `Bearer ${useAuth().token}`
-            }            
+            }
         })
         .then(
             response => response.json().then(data => {
@@ -79,7 +80,13 @@ export const Note = () => {
 
     const handleEditNote = () => {
         if (!info.name || !info.mp3 || !info.picture) {
-            alert("Alert");
+            toast.warn("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Info Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -98,21 +105,40 @@ export const Note = () => {
             }),
         })
         .then((res) => {
-            if (!res.ok) {
-                throw new Error('Something went wrong');
-            }
             return res.json();
         }).then((data) => {
-            alert("Nota modificada");
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            toast.success("Nota modificada!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }    
 
     const handleAddNote = () => {  
         if (!info.name || !info.picture || !info.mp3) {
-            alert("Alert");
+            toast.warn("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Info Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
         
@@ -132,28 +158,53 @@ export const Note = () => {
             }),
         })
         .then((res) => {
-            if (!res.ok) {
-                return res.text().then(text => { throw new Error(text) })
-            }
             return res.json();
         }).then((data) => {
-            alert("Nota Agregada");
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            toast.success("Acorde agregado!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             navigate("/notes");
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
 
     const uploadImagesToFirebase = async (images) => {
         // images is an array which has data_url and the file        
         if (info.name === undefined || (!bass && !treble)) {
-            alert("no");
+            toast.warn("Ingrese el nombre de la nota o seleccione su tipo!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Name Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
         if(images.length === 0) {
-            alert("Please select an image")
+            toast.warn("Seleccione una imagen", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Audio Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -175,16 +226,12 @@ export const Note = () => {
                         ...existingValues,
                         picture: `${url}`
                     }));
-
-                    alert("modificado");
                 }
                 else {
                     setInfo(existingValues => ({
                         ...existingValues,
                         picture: `${url}`
                     }));
-
-                    alert("agregado");
                 }
             });
         });
@@ -192,13 +239,25 @@ export const Note = () => {
 
     const uploadAudioToFirebase = async (audio) => {
         // images is an array which has data_url and the file        
-        if (info.name === undefined) {
-            alert("no");
+        if (info.name === undefined || info.name === "") {
+            toast.warn("Ingrese el nombre del acorde!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Name Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
-                
+
         if(audio.length === 0) {
-            alert("Please select an audio file")
+            toast.warn("Seleccione un archivo de audio!", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Audio Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }        
 
@@ -209,21 +268,17 @@ export const Note = () => {
         .then(() => {
             getDownloadURL(storageRef).then((url) => {
 
-                if (id) {                    
+                if (id) {
                     setInfo(existingValues => ({
                         ...existingValues,
                         mp3: `${url}`
                     }));
-
-                    alert("modificado");
                 }
                 else {
                     setInfo(existingValues => ({
                         ...existingValues,
                         mp3: `${url}`
                     }));
-
-                    alert("agregado");
                 }
             });
         });
@@ -240,7 +295,7 @@ export const Note = () => {
         setBass(false);
     }    
 
-    return (        
+    return (
         <div className={ classes["Note"] }>
             <div className={ classes['Header'] }>
                 <div className={ classes['Header-Title'] }>
@@ -281,6 +336,6 @@ export const Note = () => {
                     <AudioUploader handleSaveClick={uploadAudioToFirebase} value={id ? info.mp3 : null}/>
                 </div>
             </div>
-        </div>        
+        </div>
     )
 }
