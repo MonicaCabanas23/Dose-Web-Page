@@ -10,10 +10,12 @@ import { toast } from 'react-toastify';
 export const Users = () => {
     const [data, setData] = useState([]);
     const [showDelete, setShowDelete] = useState(false);
-    const [deleteElement, setDeleteElement] = useState({});    
+    const [deleteElement, setDeleteElement] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const fetchUsers = () => {
         setData([]);
+        setLoading(true)
         return fetch("https://api.mingo.studio/api/user/", {
             method: "GET",
             crossDomain:true,
@@ -27,6 +29,7 @@ export const Users = () => {
         .then(
             response => response.json().then(data => {
                 setData(data);
+                setLoading(false);
             })
         ).catch(() => {
         })
@@ -47,8 +50,6 @@ export const Users = () => {
     }
 
     const handleDeleteClickSubmit = (e) => {
-        console.log(useAuth().user._id);
-        console.log(deleteElement.id);
         if (deleteElement.id === useAuth().user._id || deleteElement.user_type_id === "645fe7c77ed284fe0b735ba9") {
             toast.error("No puedes eliminar a este usuario", {
                 hideProgressBar: true,
@@ -117,7 +118,7 @@ export const Users = () => {
 
     return (
         <Card>
-            <Table info={data} reloadClick={fetchUsers} deleteClick={openDeleteModal} generateActions={true} allowAddEdit={false}/>
+            <Table info={data} reloadClick={fetchUsers} deleteClick={openDeleteModal} generateActions={true} allowAddEdit={false} isLoading={loading}/>
             <Modal handleClickOpen={openDeleteModal} show={showDelete} w="27.5rem" h="15rem">
                 <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{deleteElement.user}</span></div>
                 <div className={ classes["ButtonContainer"] }>

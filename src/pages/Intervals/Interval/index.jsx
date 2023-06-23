@@ -94,7 +94,7 @@ export const Interval = () => {
         .then((res) => {            
             return res.json();
         }).then((data) => {
-            if (!data.error) {
+            if (data.error) {
                 throw new Error(data.error);
             }
 
@@ -147,7 +147,7 @@ export const Interval = () => {
             return res.json();
         }).then((data) => {
 
-            if (!data.error) {
+            if (data.error) {
                 throw new Error(data.error);
             }
 
