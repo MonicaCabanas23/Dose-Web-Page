@@ -35,10 +35,12 @@
     flex-direction: column;  
   
     main {
-      flex: 1;
-      display: flex;
-      position: relative;
+        flex: 1;
+        display: flex;
       
+        @media only screen and (max-width: 768px) {
+            position: relative;
+        }
     }
 }
 

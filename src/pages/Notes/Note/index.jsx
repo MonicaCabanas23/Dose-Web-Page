@@ -107,7 +107,7 @@ export const Note = () => {
         .then((res) => {
             return res.json();
         }).then((data) => {
-            if (!data.error) {
+            if (data.error) {
                 throw new Error(data.error);
             }
 
@@ -160,7 +160,7 @@ export const Note = () => {
         .then((res) => {
             return res.json();
         }).then((data) => {
-            if (!data.error) {
+            if (data.error) {
                 throw new Error(data.error);
             }
 
