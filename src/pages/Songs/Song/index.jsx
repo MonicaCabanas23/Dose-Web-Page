@@ -9,7 +9,6 @@ import { MdOutlineArrowBackIos } from 'react-icons/md';
 export const Song = () => {
     const {id} = useParams();    
     const [data, setData] = useState({});
-    const [save, setSave] = useState(false);
     const [form, setForm] = useState(true);
     const navigate = useNavigate();
     const [info, setInfo] = useState({
@@ -70,6 +69,7 @@ export const Song = () => {
         // Get token from localstorage
         const dataStorage = useAuth()
         const token = dataStorage.token
+        
 
         if(id) {
             await fetch(`https://api.mingo.studio/api/song/one/${id}`, {
@@ -81,7 +81,14 @@ export const Song = () => {
                 "Access-Control-Allow-Origin": "*", 
                 "Authorization": `bearer ${token}`
             }, 
-            body: JSON.stringify(info)              
+            body: JSON.stringify({
+                "name": info.name,
+                "author": info.author,
+                "ppm": info.ppm,
+                "picture": info.picture,
+                "mp3": info.mp3,
+                "notes": info.notes
+            })              
             })
             .then(
                 response => response.json().then(data => {
@@ -101,7 +108,14 @@ export const Song = () => {
                 "Access-Control-Allow-Origin": "*", 
                 "Authorization": `bearer ${token}`
             }, 
-            body: JSON.stringify(info)              
+            body: JSON.stringify({
+                "name": info.name,
+                "author": info.author,
+                "ppm": info.ppm,
+                "picture": info.picture,
+                "mp3": info.mp3,
+                "notes": info.notes
+            })              
             })
             .then(
                 response => response.json().then(data => {

@@ -105,13 +105,10 @@ export const SongNotes = ({ info, setInfo, id}) => {
     }, [selectedDuration])
 
     useEffect(() => {
-        const notesObject = {
-            "notes": data
-        }
 
         setInfo(existingValues => ({
             ...existingValues,
-            notes: notesObject
+            notes: data
         }));
 
     }, [data])
@@ -192,7 +189,6 @@ export const SongNotes = ({ info, setInfo, id}) => {
         _data.push(noteObject)
         setData(_data)
         setShowAdd(false)
-        console.log(info)
     }
 
     return (
