@@ -117,7 +117,7 @@ export const Users = () => {
     }
 
     return (
-        <Card>
+        <Card flex="true" column="true">
             <Table info={data} reloadClick={fetchUsers} deleteClick={openDeleteModal} generateActions={true} allowAddEdit={false} isLoading={loading}/>
             <Modal handleClickOpen={openDeleteModal} show={showDelete} w="27.5rem" h="15rem">
                 <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{deleteElement.user}</span></div>
