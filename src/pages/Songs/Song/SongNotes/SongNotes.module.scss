@@ -30,4 +30,69 @@
             }
         }
     }
+
+    .Radio-container {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        padding: 1rem;
+        .Radio {
+            display: flex;
+            align-items: end;
+
+            > input {
+                border: 2px solid $primary-text-icons-color;
+
+                &:focus {
+                    border: 2px solid $primary-text-icons-color;
+                }
+
+                &::before {
+                    box-shadow: inset 1em 1em $primary-text-icons-color;
+                }
+
+                &:hover {
+                    background-color: $primary-color;
+                }
+            }
+        }
+    }
+
+    .notes-options {
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+
+        > .select {
+          flex: 1 0 13.844rem ;
+          height: fit-content;
+          gap: 1rem;  
+        }
+    }
+
+    .ButtonContainer {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .SaveButton {
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            background-color: $accent-color;
+            border-radius: 1.875rem;
+            height: 2.5rem;
+            width: 12rem;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #ffffff;
+            border: none;
+        
+            &:hover {        
+                background-color: $dark-accent-color;
+            }
+        }
+    }
 }

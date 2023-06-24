@@ -9,6 +9,7 @@ import { MdOutlineArrowBackIos } from 'react-icons/md';
 export const Song = () => {
     const {id} = useParams();    
     const [data, setData] = useState({});
+    const [save, setSave] = useState(false);
     const [form, setForm] = useState(true);
     const navigate = useNavigate();
     const [info, setInfo] = useState({
@@ -63,8 +64,55 @@ export const Song = () => {
             return;
         }
         setForm(false);
-    }    
+    } 
     
+    const handleSaveClick = async () => {
+        // Get token from localstorage
+        const dataStorage = useAuth()
+        const token = dataStorage.token
+
+        if(id) {
+            await fetch(`https://api.mingo.studio/api/song/one/${id}`, {
+            method: "PUT",
+            crossDomain:true,
+            headers: {
+                "Content-Type" : "application/json",
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*", 
+                "Authorization": `bearer ${token}`
+            }, 
+            body: JSON.stringify(info)              
+            })
+            .then(
+                response => response.json().then(data => {
+                    setData(data);
+                    console.log("Actualizado")
+                    goBack()
+                })
+            ).catch(() => {
+            })
+        } else {
+            await fetch(`https://api.mingo.studio/api/song`, {
+            method: "POST",
+            crossDomain:true,
+            headers: {
+                "Content-Type" : "application/json",
+                Accept: "application/json",
+                "Access-Control-Allow-Origin": "*", 
+                "Authorization": `bearer ${token}`
+            }, 
+            body: JSON.stringify(info)              
+            })
+            .then(
+                response => response.json().then(data => {
+                    setData(data);
+                    console.log("Agregado")
+                    goBack()
+                })
+            ).catch(() => {
+            })
+        }
+    }
 
     return (        
         <div className={ classes["Song"] }>
@@ -74,7 +122,7 @@ export const Song = () => {
                     <span>{id ? data.name : "Add"}</span>
                 </div>
                 <div className={ classes['Header-Actions'] }>
-                    <span onClick={ handleNextClick }><u>{"Next"}</u></span>
+                    <span onClick={ form ? handleNextClick : handleSaveClick }><u>{form ? "Next" : "Save"}</u></span>
                 </div>
             </div>
 
