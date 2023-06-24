@@ -126,7 +126,7 @@ export const Chords = () => {
                     <Outlet/>
                 </Card> 
                 : 
-                <Card>
+                <Card flex="true" column="true">
                     <Table info={data} reloadClick={fetchChords} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal} isLoading={loading}/>
                     <Modal handleClickOpen={openDeleteModal} show={showDelete} w="27.5rem" h="15rem">
                         <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{deleteElement.note}</span></div>
