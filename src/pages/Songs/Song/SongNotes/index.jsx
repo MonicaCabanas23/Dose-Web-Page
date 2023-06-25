@@ -105,7 +105,6 @@ export const SongNotes = ({ info, setInfo, id}) => {
     }, [selectedDuration])
 
     useEffect(() => {
-
         setInfo(existingValues => ({
             ...existingValues,
             notes: data

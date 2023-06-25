@@ -7,7 +7,31 @@ import storage from '../../../../hooks/useFirebase';
 import { useState, useEffect } from "react";
 
 export const Form = ({ info, setInfo, id}) => {
-    const [pictureArray, setPictureArray] = useState([]);
+    const [uploadedImages, setUploadedImages] = useState(0);
+    const [pictures, setPictures] = useState([]);
+
+    useEffect(() => {
+        if(id && info.picture.length > 0) {
+
+            if(pictures.length > uploadedImages) {
+                uploadImagesToFirebase(pictures)
+            }
+            else if (pictures.length < uploadedImages) {
+                let pictureArray = pictures.map((image) => {
+                    return image.data_url
+                })
+
+                updateInfo(pictureArray)
+            }
+            else if (pictures.length == uploadedImages) {
+                const imagesToUpload = pictures.filter(image => {
+                    return image.data_url.substring(0,4) === "data"
+                })
+
+                uploadImagesToFirebase(imagesToUpload)
+            }
+        }
+    }, [uploadedImages, pictures])
 
     const setSongName = (e) => {
         setInfo(existingValues => ({
@@ -30,15 +54,48 @@ export const Form = ({ info, setInfo, id}) => {
         }));
     }
 
-    const uploadImagesToFirebase = async (images) => {
-        // images is an array which has data_url and the file        
+    const verifyUploading = (images) => {      
         if(images.length === 0) {
             alert("Please select an image")
             return;
         }
 
-        for(var i = 0; i < images.length; i++) {
-            console.log(images[i])
+        // To edit
+        if(id && info.picture.length > 0) {
+            setUploadedImages(info.picture.length)
+            setPictures(images)
+            return;
+        }
+
+        // To add
+        if(!id) {
+            uploadImagesToFirebase(images)
+        }
+    }
+
+    const updateInfo = (pictureArray) => {
+        
+        if (id && pictureArray.length > 0) {
+            var _info = info
+            _info.picture = pictureArray
+            setInfo(_info)
+            
+            alert("modificado")
+        }
+        else if (pictureArray.length > 0) {
+            var _info = info
+            _info.picture = pictureArray
+            setInfo(_info)
+
+            alert("agregado");
+        }
+    }
+
+    const uploadImagesToFirebase = async (images) => {
+        let pictureArray = id ? info.picture : pictures
+
+        // Just saves those images that are not yet uploaded
+        for(var i = uploadedImages > images.length ? 0 : uploadedImages; i < images.length; i++) {
             // Gets the storage location to save the current image[i]
             var storageRef = ref(storage, `/mingo-songs-images/${images[i].file.name}`)
 
@@ -46,29 +103,18 @@ export const Form = ({ info, setInfo, id}) => {
             await uploadBytesResumable(storageRef, images[i].file)
             .then(() => {
                 getDownloadURL(storageRef).then((url) => {
-                    // Update the picturesArray object
-                    var _pictureArray = pictureArray
-                    _pictureArray.push(`${url}`)
-                    setPictureArray(_pictureArray)
 
-
-                    if (id) {
-                        var _info = info
-                        _info.picture = pictureArray
-                        setInfo(_info)
-
-                        alert("modificado");
+                    // Save url references
+                    pictureArray.push(`${url}`)
+                    // Update with the new uploaded images
+                    if(pictureArray.length > 0) {
+                        updateInfo(pictureArray)
                     }
-                    else {
-                        var _info = info
-                        _info.picture = pictureArray
-                        setInfo(_info)
 
-                        alert("agregado");
-                    }
                 });
             });
         }
+
         
     }
 
@@ -131,9 +177,9 @@ export const Form = ({ info, setInfo, id}) => {
                     <span>Picture</span>
                     {
                         !id ?
-                        <ImageUploader handleSaveClick={uploadImagesToFirebase} number = {100}/>
+                        <ImageUploader handleSaveClick={verifyUploading} number = {100}/>
                         :
-                        <ImageUploader key={info.picture} item={info} handleSaveClick={uploadImagesToFirebase} number = {100}/>
+                        <ImageUploader key={info.picture} item={info} handleSaveClick={verifyUploading} number = {100}/>
                     }
                 </div>
                 <div className={ classes["Uploader"] }>

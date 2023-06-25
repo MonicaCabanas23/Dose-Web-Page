@@ -72,7 +72,7 @@ export const Song = () => {
         
 
         if(id) {
-            await fetch(`https://api.mingo.studio/api/song/one/${id}`, {
+            await fetch(`https://api.mingo.studio/api/song/${id}`, {
             method: "PUT",
             crossDomain:true,
             headers: {
@@ -87,13 +87,12 @@ export const Song = () => {
                 "ppm": info.ppm,
                 "picture": info.picture,
                 "mp3": info.mp3,
-                "notes": info.notes
+                "notesData": info.notes
             })              
             })
             .then(
                 response => response.json().then(data => {
                     setData(data);
-                    console.log("Actualizado")
                     goBack()
                 })
             ).catch(() => {
@@ -120,7 +119,6 @@ export const Song = () => {
             .then(
                 response => response.json().then(data => {
                     setData(data);
-                    console.log("Agregado")
                     goBack()
                 })
             ).catch(() => {
