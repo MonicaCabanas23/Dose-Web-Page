@@ -15,11 +15,14 @@ export const SongNotes = ({ info, setInfo, id}) => {
     const [showAdd, setShowAdd] = useState(false)
     const [note, setNote] = useState(true)
     const [silence, setSilence] = useState(false)
-    const [flat, setFlat] = useState(true)
+    const [flat, setFlat] = useState(false)
     const [sharp, setSharp] = useState(true)
+    // Selected Item 
+    const [index, setIndex] = useState(0)
     // For saving the symbol
+    const [noteName, setNoteName] = useState("Do 4")
     const [selectedNote, setSelectedNote] = useState("Do 4")
-    const [selectedNotation, setSelectedNotation] = useState("")
+    const [selectedNotation, setSelectedNotation] = useState("natural")
     const [selectedDuration, setSelectedDuration] = useState(4)
     const [durationValue, setDurationValue] = useState({
         $numberDecimal: 1
@@ -77,21 +80,27 @@ export const SongNotes = ({ info, setInfo, id}) => {
         }
     ];
 
-    useEffect(() => {
+    useEffect(() => {   
         if(info.notes) {
             setData(info.notes.notes)
         }
     }, [])
 
     useEffect(() => {
-        if(selectedNotation === "bemol" || selectedNotation === "#") {
-            const noteName = selectedNote.match(/^\w+/g)
+        if(note && (selectedNotation === "bemol" || selectedNotation === "#")) {
+            const _noteName = selectedNote.match(/^\w+/g)
             const numberNote = selectedNote.match(/\w+$/g)
-            const newName = noteName + " " + selectedNotation + " " + numberNote
-            setSelectedNote(newName)
+            const newName = _noteName + " " + selectedNotation + " " + numberNote
+            setNoteName(newName)
             return;
+        } else if(note) {
+            setNoteName(selectedNote)
+            return
+        } else if(silence) {
+            setNoteName("Silence")
+            return
         }
-    }, [selectedNotation])
+    }, [selectedNotation, selectedNote, note, silence])
 
     useEffect(() => {
         // Duration of a note depending of the time of note it is (black, white, corchea, etc)
@@ -121,7 +130,6 @@ export const SongNotes = ({ info, setInfo, id}) => {
         
         setNote(false)
         setSilence(true)
-        setSelectedNote("Silence")
     }
 
     const handleNoteChange = (e) => {
@@ -134,7 +142,7 @@ export const SongNotes = ({ info, setInfo, id}) => {
 
             return;
         }
-        else if(e.target.value === "Fa 4" || e.target.value === "Fa 5") {
+        else if(e.target.value === "Fa 4" || e.target.value === "Fa 5" || e.target.value === "Do 4" || e.target.value === "Do 5") {
             setFlat(false)
             setSharp(true)
 
@@ -151,10 +159,6 @@ export const SongNotes = ({ info, setInfo, id}) => {
     }
 
     const handleNotationChange = (e) => {
-        if (e.target.value === "natural") {
-            setSelectedNotation("")
-            return;
-        }
         setSelectedNotation(e.target.value)
     }
 
@@ -162,25 +166,93 @@ export const SongNotes = ({ info, setInfo, id}) => {
         setSelectedDuration(e.target.value)
     }
 
-    const handleClickEdit = () => {
+    const handleClickEdit = (i) => {
         setShowEdit(!showEdit)
+        setIndex(i);
+
+        const _selectedSymbol = data[i]
+
+        if(_selectedSymbol) {
+            setNoteName(_selectedSymbol.symbol);
+            setDurationValue(_selectedSymbol.duration.$numberDecimal)
+
+            const symbolName = _selectedSymbol.symbol.match(/^\w+/g)
+            const symbolNumber = _selectedSymbol.symbol.match(/\w+$/g)
+    
+            if(symbolNumber && symbolName[0] != "Silence") {
+                const _selectedNote = symbolName[0] +  " " + symbolNumber[0]
+                setSelectedNote(_selectedNote)
+            } else {
+                setNote(false)
+                setSilence(true)
+            }
+    
+            const symbolNotation = _selectedSymbol.symbol.match(/(#)+|(bemol)+/g)
+
+            if(!symbolNotation) {
+                setSelectedNotation("natural")
+            } else {
+                setSelectedNotation(symbolNotation[0])
+            }
+    
+            const symbolDuration = _selectedSymbol.duration.$numberDecimal  
+    
+            switch (symbolDuration) {
+                case ((60/info.ppm) * 4).toFixed(3): 
+                    setSelectedDuration(4)
+                    break;
+                case ((60/info.ppm) * 2).toFixed(3): 
+                    setSelectedDuration(2)
+                    break;
+                case ((60/info.ppm) * 1).toFixed(3): 
+                    setSelectedDuration(1)
+                    break;
+                case ((60/info.ppm) * 0.5).toFixed(3): 
+                    setSelectedDuration(0.5)
+                    break;
+                case ((60/info.ppm) * 0.25).toFixed(3): 
+                    setSelectedDuration(0.25)
+                    break;
+                case ((60/info.ppm) * 0.125).toFixed(3): 
+                    setSelectedDuration(0.125)
+                    break;
+                default:
+                    console.log("Los valores no concuerdan")
+                    break;
+            }
+        }
     }
 
-    const handleClickDelete = () => {
+    const handleClickDelete = (i) => {
         setShowDelete(!showDelete)
+        setIndex(i);
     }
 
     const handleClickAdd = () => {
         setShowAdd(!showAdd)
     }
 
+    const editNote = () => {
+        const noteObject = {
+            "symbol": noteName,
+            "duration": durationValue
+        }
+
+        let _data = data
+        _data[index] = noteObject
+        setData(_data)
+        setShowEdit(false) 
+    }
+
     const deleteNote = () => {
-        alert("Tratando de eliminar")
+        delete data[index]
+        setShowDelete(!showDelete);
+        alert("Se ha eliminado");
     }
 
     const addNote = () => {
         const noteObject = {
-            "symbol": selectedNote,
+            "symbol": noteName,
             "duration": durationValue
         }
         
@@ -194,15 +266,15 @@ export const SongNotes = ({ info, setInfo, id}) => {
         <div className={classes["cards-container"]}>
             {data ? 
                 data.map(
-                    note => {
+                    (note, index) => {
                         return (
-                            <Cards key={`${note.symbol}` + `${i++}`}>
+                            <Cards key={index}>
                                 <div>
                                     <span className={ classes["Span"] }>{note.symbol}</span>{/* <span className={ [classes["Span"], classes["Role-name"]].join(" ") }>{roles.type}</span> */}
                                 </div>
                                 <div className={ classes['Actions'] }>
-                                    <button onClick={handleClickEdit} id="edit" ><BiEditAlt/></button>
-                                    <button onClick={handleClickDelete} id="delete"><BiTrash/></button>
+                                    <button onClick={() => {handleClickEdit(index)}} ><BiEditAlt/></button>
+                                    <button onClick={() => {handleClickDelete(index)}} ><BiTrash/></button>
                                 </div>
                             </Cards>
                         );
@@ -229,21 +301,21 @@ export const SongNotes = ({ info, setInfo, id}) => {
                         </div>
                     </div>
                     <div className={classes["notes-options"]}>
-                        <Select className={classes["select"]} defaultValue={"Do 4"} onChange={handleNoteChange} disabled={silence ? true : false}>
+                        <Select className={classes["select"]} value={selectedNote ?? "Do 4"} onChange={handleNoteChange} disabled={silence ? true : false}>
                             {
                                 availableNotes.map((note) => {
                                     return <MenuItem key={note} value={note} > {note} </MenuItem>
                                 })
                             }
                         </Select>
-                        <Select className={classes["select"]} defaultValue={"natural"} onChange={handleNotationChange} disabled={silence ? true : false}>
+                        <Select className={classes["select"]} value={selectedNotation ?? "natural"} onChange={handleNotationChange} disabled={silence ? true : false}>
                             {
                                 noteNotation.map((notation) => {
                                     return <MenuItem key={notation.name} value={notation.value} disabled={notation.disabled}> {notation.name} </MenuItem>
                                 })
                             }
                         </Select>
-                        <Select className={classes["select"]} defaultValue={"4"} onChange={handleDurationChange}>
+                        <Select className={classes["select"]} value={selectedDuration ?? 4} onChange={handleDurationChange}>
                             {
                                 durationType.map((duration) => {
                                     return <MenuItem key={duration.name} value={duration.value} > {duration.name} </MenuItem>
@@ -252,7 +324,7 @@ export const SongNotes = ({ info, setInfo, id}) => {
                         </Select>
                     </div>
                     <div className={ classes["ButtonContainer"] }>
-                        <button className={ classes['SaveButton'] } onClick={addNote}>Save</button>
+                        <button className={ classes['SaveButton'] } onClick={editNote}>Save</button>
                     </div>
                 </Modal> :
                 <></>
