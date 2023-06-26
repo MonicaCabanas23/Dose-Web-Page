@@ -4,6 +4,7 @@ import { ImageUploader } from "../../../../components/ImageUploader/ImageUploade
 import { AudioUploader } from "../../../../components/AudioUploader/AudioUploader"
 import { ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import storage from '../../../../hooks/useFirebase';
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 
 export const Form = ({ info, setInfo, id}) => {
@@ -56,7 +57,13 @@ export const Form = ({ info, setInfo, id}) => {
 
     const verifyUploading = (images) => {      
         if(images.length === 0) {
-            alert("Please select an image")
+            toast.error("No hay imagenes para guardar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -79,15 +86,27 @@ export const Form = ({ info, setInfo, id}) => {
             var _info = info
             _info.picture = pictureArray
             setInfo(_info)
-            
-            alert("modificado")
+
+            toast.success("Imagenes modificadas", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         }
         else if (pictureArray.length > 0) {
             var _info = info
             _info.picture = pictureArray
             setInfo(_info)
 
-            alert("agregado");
+            toast.success("Imagenes añadidas", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         }
     }
 
@@ -121,12 +140,24 @@ export const Form = ({ info, setInfo, id}) => {
     const uploadAudioToFirebase = async (audio) => {
         // audio is an array which has data_url and the file        
         if (info.name === undefined) {
-            alert("no");
+            toast.error("No hay audio para guardar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
                 
         if(audio.length === 0) {
-            alert("Please select an audio file")
+            toast.error("No hay audio para guardar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }        
 
@@ -143,7 +174,13 @@ export const Form = ({ info, setInfo, id}) => {
                         mp3: `${url}`
                     }));
 
-                    alert("modificado");
+                    toast.success("Audio modificado", {
+                        hideProgressBar: true,
+                        theme: "dark",
+                        toastId: "Success",
+                        pauseOnFocusLoss: false,
+                        autoClose:3000
+                    });
                 }
                 else {
                     setInfo(existingValues => ({
@@ -151,7 +188,13 @@ export const Form = ({ info, setInfo, id}) => {
                         mp3: `${url}`
                     }));
 
-                    alert("agregado");
+                    toast.success("Audio agregado", {
+                        hideProgressBar: true,
+                        theme: "dark",
+                        toastId: "Success",
+                        pauseOnFocusLoss: false,
+                        autoClose:3000
+                    });
                 }
             });
         });

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Form } from './Form';
 import { SongNotes } from './SongNotes';
+import { toast } from 'react-toastify';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
 
 export const Song = () => {
@@ -59,7 +60,13 @@ export const Song = () => {
 
     const handleNextClick = () => {
         if (!info.name || !info.mp3 || !info.picture) {
-            alert("Alert");
+            toast.error("Hay informacion sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
         setForm(false);
@@ -70,32 +77,63 @@ export const Song = () => {
         const dataStorage = useAuth()
         const token = dataStorage.token
         
+        if(!info.notes || info.notes.length === 0) {
+            toast.error("Hay información sin rellenar", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+            return;
+        }
 
         if(id) {
             await fetch(`https://api.mingo.studio/api/song/${id}`, {
-            method: "PUT",
-            crossDomain:true,
-            headers: {
-                "Content-Type" : "application/json",
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*", 
-                "Authorization": `bearer ${token}`
-            }, 
-            body: JSON.stringify({
-                "name": info.name,
-                "author": info.author,
-                "ppm": info.ppm,
-                "picture": info.picture,
-                "mp3": info.mp3,
-                "notesData": info.notes
-            })              
+                method: "PUT",
+                crossDomain:true,
+                headers: {
+                    "Content-Type" : "application/json",
+                    Accept: "application/json",
+                    "Access-Control-Allow-Origin": "*", 
+                    "Authorization": `bearer ${token}`
+                }, 
+                body: JSON.stringify({
+                    "name": info.name,
+                    "author": info.author,
+                    "ppm": info.ppm,
+                    "picture": info.picture,
+                    "mp3": info.mp3,
+                    "notesData": info.notes
+                })              
             })
-            .then(
-                response => response.json().then(data => {
-                    setData(data);
-                    goBack()
-                })
-            ).catch(() => {
+            .then(response => response.json().then(data => {
+                setData(data);
+                
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+    
+                toast.success("Canción modificada!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
+
+                goBack()
+                return;
+            })
+            ).catch((error) => {
+                toast.error(`${error}`, {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Error",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
             })
         } else {
             await fetch(`https://api.mingo.studio/api/song`, {
@@ -116,12 +154,33 @@ export const Song = () => {
                 "notes": info.notes
             })              
             })
-            .then(
-                response => response.json().then(data => {
+            .then(response => response.json().then(data => {
                     setData(data);
+                    
+
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+        
+                    toast.success("Canción creada!", {
+                        hideProgressBar: true,
+                        theme: "dark",
+                        toastId: "Success",
+                        pauseOnFocusLoss: false,
+                        autoClose:3000
+                    });
+
                     goBack()
+                    return;
                 })
-            ).catch(() => {
+            ).catch((error) => {
+                toast.error(`${error}`, {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Error",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
             })
         }
     }

@@ -5,6 +5,7 @@ import { Card } from '../../components/Card/Card';
 import { Modal } from '../../components/Modal/Modal';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Outlet, useOutlet } from 'react-router-dom';
 
 export const Songs = () => {
@@ -63,7 +64,13 @@ export const Songs = () => {
 
     const handleDeleteClickSubmit = (e) => {
         if (!useValidateToken()) {
-            alert("Token expired");
+            toast.error("Sesión expirada", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
             return;
         }
 
@@ -88,11 +95,25 @@ export const Songs = () => {
         }).then((data) => {
             setShowDelete(false);
             fetchSongs();
-            alert("Canción eliminada");
+
+            toast.success("Canción eliminada", {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Success",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
             e.target.disabled = false;
             return;
         }).catch((error) => {
-            alert(error);
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
         });
     }
     

@@ -5,6 +5,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { BiTrash } from "react-icons/bi";
 import { Select, MenuItem } from "@mui/material";
 import { Modal } from "../../../../components/Modal/Modal";
+import { toast } from 'react-toastify';
 import { useState, useEffect } from "react";
 
 export const SongNotes = ({ info, setInfo, id}) => {
@@ -217,7 +218,13 @@ export const SongNotes = ({ info, setInfo, id}) => {
                     setSelectedDuration(0.125)
                     break;
                 default:
-                    console.log("Los valores no concuerdan")
+                    toast.error("Los valores no concuerdan", {
+                        hideProgressBar: true,
+                        theme: "dark",
+                        toastId: "Error",
+                        pauseOnFocusLoss: false,
+                        autoClose:3000
+                    });
                     break;
             }
         }
@@ -247,7 +254,13 @@ export const SongNotes = ({ info, setInfo, id}) => {
     const deleteNote = () => {
         delete data[index]
         setShowDelete(!showDelete);
-        alert("Se ha eliminado");
+        toast.success("Nota eliminada exitosamente", {
+            hideProgressBar: true,
+            theme: "dark",
+            toastId: "Success",
+            pauseOnFocusLoss: false,
+            autoClose:3000
+        });
     }
 
     const addNote = () => {
