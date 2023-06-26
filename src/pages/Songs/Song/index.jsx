@@ -87,6 +87,26 @@ export const Song = () => {
             });
             return;
         }
+        try {
+            if(info.notes.length > 0) {
+                info.notes.map(note => {
+                    console.log(note)
+                    if (Object.keys(note).length === 0) {
+                        throw new Error("ocurrió un error al añadir las notas")
+                    }
+                })
+            }
+        } catch(error){
+            toast.error(`${error}`, {
+                hideProgressBar: true,
+                theme: "dark",
+                toastId: "Error",
+                pauseOnFocusLoss: false,
+                autoClose:3000
+            });
+
+            return;
+        }
 
         if(id) {
             await fetch(`https://api.mingo.studio/api/song/${id}`, {
@@ -183,6 +203,8 @@ export const Song = () => {
                 });
             })
         }
+
+        console.log(info.notes)
     }
 
     return (        

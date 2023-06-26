@@ -11,6 +11,10 @@ import { useState, useEffect } from "react";
 export const SongNotes = ({ info, setInfo, id}) => {
     let i = 0
     const [data, setData] = useState([])
+    // Flags if the user has edited or added
+    const [isEditing, setIsEditing] = useState(false)
+    const [isAdding, setIsAdding] = useState(false)
+    // Logical use flags
     const [showEdit, setShowEdit] = useState(false)
     const [showDelete, setShowDelete] = useState(false)
     const [showAdd, setShowAdd] = useState(false)
@@ -26,7 +30,7 @@ export const SongNotes = ({ info, setInfo, id}) => {
     const [selectedNotation, setSelectedNotation] = useState("natural")
     const [selectedDuration, setSelectedDuration] = useState(4)
     const [durationValue, setDurationValue] = useState({
-        $numberDecimal: 1
+        $numberDecimal: (60/info.ppm) * 4
     })
     // For comboBoxes
     const availableNotes = [
@@ -89,14 +93,26 @@ export const SongNotes = ({ info, setInfo, id}) => {
 
     useEffect(() => {
         if(note && (selectedNotation === "bemol" || selectedNotation === "#")) {
+
+            if(selectedNotation === "bemol" &&  (selectedNote === "Fa 4" || selectedNote === "Fa 5" || selectedNote === "Do 4" || selectedNote === "Do 5")) {
+                setSelectedNotation("natural")
+                return;
+            } 
+            else if (selectedNotation === "#" && (selectedNote === "Mi 4" || selectedNote === "Mi 5" || selectedNote === "Si 4")) {
+                setSelectedNotation("natural")
+                return;
+            }
+
             const _noteName = selectedNote.match(/^\w+/g)
             const numberNote = selectedNote.match(/\w+$/g)
             const newName = _noteName + " " + selectedNotation + " " + numberNote
             setNoteName(newName)
             return;
+
         } else if(note) {
             setNoteName(selectedNote)
             return
+
         } else if(silence) {
             setNoteName("Silence")
             return
@@ -170,12 +186,14 @@ export const SongNotes = ({ info, setInfo, id}) => {
     const handleClickEdit = (i) => {
         setShowEdit(!showEdit)
         setIndex(i);
+        setIsEditing(true)
+        if(isAdding) {
+            clearData
+        }
 
         const _selectedSymbol = data[i]
 
         if(_selectedSymbol) {
-            setNoteName(_selectedSymbol.symbol);
-            setDurationValue(_selectedSymbol.duration.$numberDecimal)
 
             const symbolName = _selectedSymbol.symbol.match(/^\w+/g)
             const symbolNumber = _selectedSymbol.symbol.match(/\w+$/g)
@@ -195,8 +213,14 @@ export const SongNotes = ({ info, setInfo, id}) => {
             } else {
                 setSelectedNotation(symbolNotation[0])
             }
-    
-            const symbolDuration = _selectedSymbol.duration.$numberDecimal  
+
+            let symbolDuration
+
+            if(_selectedSymbol.duration.$numberDecimal) {
+                symbolDuration = _selectedSymbol.duration.$numberDecimal
+            } else {
+                symbolDuration = _selectedSymbol.duration
+            }
     
             switch (symbolDuration) {
                 case ((60/info.ppm) * 4).toFixed(3): 
@@ -236,7 +260,11 @@ export const SongNotes = ({ info, setInfo, id}) => {
     }
 
     const handleClickAdd = () => {
-        setShowAdd(!showAdd)
+        setShowAdd(!showAdd);
+        setIsAdding(true);
+        if(isEditing) {
+            clearData()
+        }
     }
 
     const editNote = () => {
@@ -248,7 +276,10 @@ export const SongNotes = ({ info, setInfo, id}) => {
         let _data = data
         _data[index] = noteObject
         setData(_data)
+
         setShowEdit(false) 
+        clearData()
+        setIsEditing(false)
     }
 
     const deleteNote = () => {
@@ -273,8 +304,22 @@ export const SongNotes = ({ info, setInfo, id}) => {
         let _data = data
         _data.push(noteObject)
         setData(_data)
+
         setShowAdd(false)
+        clearData()
+        isAdding(false)
     }
+
+    const clearData = () => {
+        setSelectedNote("Do 4");
+        setSelectedNotation("natural"); 
+        setSelectedDuration(4);
+        setNote(true);
+        setSilence(false);
+        setFlat(false); 
+        setSharp(true);
+    }
+
 
     return (
         <div className={classes["cards-container"]}>
@@ -284,7 +329,7 @@ export const SongNotes = ({ info, setInfo, id}) => {
                         return (
                             <Cards key={index}>
                                 <div>
-                                    <span className={ classes["Span"] }>{note.symbol}</span>{/* <span className={ [classes["Span"], classes["Role-name"]].join(" ") }>{roles.type}</span> */}
+                                    <span className={ classes["Span"] }>{note.symbol}</span>
                                 </div>
                                 <div className={ classes['Actions'] }>
                                     <button onClick={() => {handleClickEdit(index)}} ><BiEditAlt/></button>
