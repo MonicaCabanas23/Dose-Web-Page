@@ -13,6 +13,13 @@
     justify-content: center;
     gap: 16px;
 
+    > .Loader-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .AddButton {
         flex: 1 0 18.75rem;
         max-width: 18.75rem;

@@ -12,12 +12,14 @@ export const Chords = () => {
     const [data, setData] = useState([]);
     const [showDelete, setShowDelete] = useState(false);
     const [deleteElement, setDeleteElement] = useState({});
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const location = useLocation()
     const outlet = useOutlet();
 
     const fetchChords = async  () => {
         setData([]);
+        setLoading(true);
         await fetch("https://api.mingo.studio/api/chord/", {
             method: "GET",
             crossDomain:true,
@@ -31,6 +33,7 @@ export const Chords = () => {
         .then(
             response => response.json().then(data => {
                 setData(data);
+                setLoading(false)
             })
         ).catch(() => {
         })
@@ -123,8 +126,8 @@ export const Chords = () => {
                     <Outlet/>
                 </Card> 
                 : 
-                <Card>
-                    <Table info={data} reloadClick={fetchChords} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal}/>
+                <Card flex="true" column="true">
+                    <Table info={data} reloadClick={fetchChords} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal} isLoading={loading}/>
                     <Modal handleClickOpen={openDeleteModal} show={showDelete} w="27.5rem" h="15rem">
                         <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{deleteElement.note}</span></div>
                         <div className={ classes["ButtonContainer"] }>

@@ -11,12 +11,14 @@ export const Intervals = () => {
     const [data, setData] = useState([]);
     const [showDelete, setShowDelete] = useState(false);
     const [deleteElement, setDeleteElement] = useState({});
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const location = useLocation()
     const outlet = useOutlet();
 
     const fetchIntervals = () => {
         setData([]);
+        setLoading(true);
         return fetch("https://api.mingo.studio/api/interval/", {
             method: "GET",
             crossDomain:true,
@@ -30,6 +32,7 @@ export const Intervals = () => {
         .then(
             response => response.json().then(data => {
                 setData(data);
+                setLoading(false);
             })
         ).catch(() => {
         })
@@ -122,8 +125,8 @@ export const Intervals = () => {
                     <Outlet/>
                 </Card> 
                 : 
-                <Card>
-                    <Table info={data} reloadClick={fetchIntervals} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal}/>
+                <Card flex="true" column="true">
+                    <Table info={data} reloadClick={fetchIntervals} addClick={addClick} editClick={editClick} deleteClick={openDeleteModal} isLoading={loading}/>
                     <Modal handleClickOpen={openDeleteModal} show={showDelete} w="27.5rem" h="15rem">
                         <div><span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete - </span><span className={ [classes["Span"], classes["Role-name"], classes["Title"]].join(" ") }>{deleteElement.interval}</span></div>
                         <div className={ classes["ButtonContainer"] }>

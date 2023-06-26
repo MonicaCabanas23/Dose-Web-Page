@@ -9,19 +9,23 @@ import storage from '../../hooks/useFirebase';
 import { useAuth, useValidateToken } from '../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { TailSpin } from 'react-loader-spinner';
 
 export const Avatars = () => {
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [avatars, setAvatars] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedAvatar, setSelectedAvatar] = useState({});
     
     const getAvatars = async () => {
-        const response = await fetch("https://api.mingo.studio/api/avatar/")
-        .then((response) => response.json());
-
-        setAvatars(response);
+        setLoading(true);
+        await fetch("https://api.mingo.studio/api/avatar/")
+        .then((response) => response.json().then(data => {
+            setAvatars(data);
+            setLoading(false);
+        }));
     }
 
     useEffect(() => {
@@ -272,42 +276,60 @@ export const Avatars = () => {
     return (
         <div className={classes["Container"]}>
             {
-                avatars && 
-                avatars.map((avatar) => (
-                    <AvatarCard  key={avatar._id} avatar={avatar} handleEdit={handleEditClick} handleDelete={handleDeleteClick}/>
-                ))
-            }
-             <IconContext.Provider value={{ color: "white", size: "40px" }}>
-                <button className={classes["AddButton"]} onClick={handleAddClick}>
-                    <AiOutlinePlus />
-                </button>
-             </IconContext.Provider>
-             {
-                showEdit && selectedAvatar.picture ?
-                <Modal handleClickOpen={handleEditClick} show={showEdit}>
-                    <span className={ [classes["Span"], classes["Title"]].join(" ") }>Edit</span>
-                    <ImageUploader item={selectedAvatar} handleSaveClick={uploadToFirebase} number = {1}/>
-                </Modal> :
-                <></>
-             }
-             {
-                showDelete ?
-                <Modal handleClickOpen={handleDeleteClick} show={showDelete} w="27.5rem" h="15rem">
-                    <span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete</span>
-                    <div className={ classes["ButtonContainer"] }>
-                        <button className={ classes['SaveButton'] } onClick={deleteAvatar}>Delete</button>
-                    </div>
-                </Modal> :
-                <></>
-             }
-             {
-                showAdd ? 
-                <Modal handleClickOpen={handleAddClick} show={showAdd}>
-                    <span className={ [classes["Span"], classes["Title"]].join(" ") }>Add</span>
-                    <ImageUploader handleSaveClick={uploadToFirebase} number = {1}/>
-                </Modal> :
-                <></>
-             }
+                loading ? 
+                <div className={ classes["Loader-container"] }>
+                    <TailSpin
+                        height="80"
+                        width="80"
+                        color="#FFC107"
+                        ariaLabel="tail-spin-loading"
+                        radius="1"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                    />
+                </div>
+                :
+                <>
+                    {
+                        avatars && 
+                        avatars.map((avatar) => (
+                            <AvatarCard  key={avatar._id} avatar={avatar} handleEdit={handleEditClick} handleDelete={handleDeleteClick}/>
+                        ))
+                    }
+                    <IconContext.Provider value={{ color: "white", size: "40px" }}>
+                        <button className={classes["AddButton"]} onClick={handleAddClick}>
+                            <AiOutlinePlus />
+                        </button>
+                    </IconContext.Provider>
+                    {
+                        showEdit && selectedAvatar.picture ?
+                        <Modal handleClickOpen={handleEditClick} show={showEdit}>
+                            <span className={ [classes["Span"], classes["Title"]].join(" ") }>Edit</span>
+                            <ImageUploader item={selectedAvatar} handleSaveClick={uploadToFirebase} number = {1}/>
+                        </Modal> :
+                        <></>
+                    }
+                    {
+                        showDelete ?
+                        <Modal handleClickOpen={handleDeleteClick} show={showDelete} w="27.5rem" h="15rem">
+                            <span className={ [classes["Span"], classes["Title"]].join(" ") }>Delete</span>
+                            <div className={ classes["ButtonContainer"] }>
+                                <button className={ classes['SaveButton'] } onClick={deleteAvatar}>Delete</button>
+                            </div>
+                        </Modal> :
+                        <></>
+                    }
+                    {
+                        showAdd ? 
+                        <Modal handleClickOpen={handleAddClick} show={showAdd}>
+                            <span className={ [classes["Span"], classes["Title"]].join(" ") }>Add</span>
+                            <ImageUploader handleSaveClick={uploadToFirebase} number = {1}/>
+                        </Modal> :
+                        <></>
+                    }
+                </>
+            }            
         </div>
     )
 }
