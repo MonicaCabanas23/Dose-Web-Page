@@ -252,7 +252,8 @@ export const SongNotes = ({ info, setInfo, id}) => {
     }
 
     const deleteNote = () => {
-        delete data[index]
+        data.splice(index, 1)
+
         setShowDelete(!showDelete);
         toast.success("Nota eliminada exitosamente", {
             hideProgressBar: true,
