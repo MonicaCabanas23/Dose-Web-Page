@@ -95,7 +95,13 @@ export const Interval = () => {
             return res.json();
         }).then((data) => {
             if (data.error) {
-                throw new Error(data.error);
+                let errorMessage = '';
+                if (typeof data.error === 'string') {
+                    errorMessage = data.error;
+                } else if (typeof data.error === 'object' && data.error.name) {
+                    errorMessage = data.error.name;
+                }
+                throw new Error(errorMessage);
             }
 
             toast.success("Intervalo modificado!", {
@@ -105,9 +111,10 @@ export const Interval = () => {
                 pauseOnFocusLoss: false,
                 autoClose:3000
             });
+            navigate("/intervals");
             return;
         }).catch((error) => {
-            toast.error(`${error}`, {
+            toast.error(`${{error}}`, {
                 hideProgressBar: true,
                 theme: "dark",
                 toastId: "Error",
@@ -148,7 +155,13 @@ export const Interval = () => {
         }).then((data) => {
 
             if (data.error) {
-                throw new Error(data.error);
+                let errorMessage = '';
+                if (typeof data.error === 'string') {
+                    errorMessage = data.error;
+                } else if (typeof data.error === 'object' && data.error.name) {
+                    errorMessage = data.error.name;
+                }
+                throw new Error(errorMessage);
             }
 
             toast.success("Intervalo agregado!", {
@@ -213,6 +226,13 @@ export const Interval = () => {
                         mp3: `${url}`
                     }));                    
                 }
+                toast.success("Audio seleccionado!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
             });
         });
     }
