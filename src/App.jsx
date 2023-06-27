@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate  } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Topics, Users } from "./pages";
+import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Users } from "./pages";
 import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
@@ -46,7 +46,6 @@ function App() {
                 <Route path="song" element={<Song/>}/>
                 <Route path="song/:id" element={<Song/>}/>
               </Route>
-              <Route path="/topics" element={<Topics/>}/>
               <Route path="/roles" element={<Roles/>}/>
               <Route path="/users" element={<Users/>}/>
               <Route path="/avatars" element={<Avatars/>}/>

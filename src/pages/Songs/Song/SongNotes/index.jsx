@@ -307,7 +307,7 @@ export const SongNotes = ({ info, setInfo, id}) => {
 
         setShowAdd(false)
         clearData()
-        isAdding(false)
+        setIsAdding(false)
     }
 
     const clearData = () => {

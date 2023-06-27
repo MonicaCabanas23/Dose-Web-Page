@@ -90,7 +90,6 @@ export const Song = () => {
         try {
             if(info.notes.length > 0) {
                 info.notes.map(note => {
-                    console.log(note)
                     if (Object.keys(note).length === 0) {
                         throw new Error("ocurrió un error al añadir las notas")
                     }
@@ -124,12 +123,10 @@ export const Song = () => {
                     "ppm": info.ppm,
                     "picture": info.picture,
                     "mp3": info.mp3,
-                    "notesData": info.notes
+                    "notesData": info.notes.notes ? info.notes.notes : info.notes
                 })              
             })
             .then(response => response.json().then(data => {
-                setData(data);
-                
 
                 if (data.error) {
                     throw new Error(data.error);
@@ -143,7 +140,7 @@ export const Song = () => {
                     autoClose:3000
                 });
 
-                goBack()
+                navigate("/songs")
                 return;
             })
             ).catch((error) => {
@@ -171,12 +168,10 @@ export const Song = () => {
                 "ppm": info.ppm,
                 "picture": info.picture,
                 "mp3": info.mp3,
-                "notes": info.notes
+                "notes": info.notes.notes ? info.notes.notes : info.notes
             })              
             })
             .then(response => response.json().then(data => {
-                    setData(data);
-                    
 
                     if (data.error) {
                         throw new Error(data.error);
@@ -190,7 +185,7 @@ export const Song = () => {
                         autoClose:3000
                     });
 
-                    goBack()
+                    navigate("/songs")
                     return;
                 })
             ).catch((error) => {
@@ -204,7 +199,6 @@ export const Song = () => {
             })
         }
 
-        console.log(info.notes)
     }
 
     return (        

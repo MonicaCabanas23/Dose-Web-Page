@@ -11,9 +11,8 @@ import { Interval } from "./Intervals/Interval";
 
 import { Songs } from "./Songs";
 import { Song } from "./Songs/Song"
-import { Topics } from "./Topics";
 import { Roles } from "./Roles";
 import { Users } from "./Users";
 import { Avatars } from "./Avatars";
 
-export { Avatars, Users, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Topics };
+export { Avatars, Users, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song};
