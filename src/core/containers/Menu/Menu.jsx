@@ -11,7 +11,6 @@ export const Navigation = ({menuState=false}) => {
         <ActionButton url="/chords" name="Chords" icon="IoMusicalNotesOutline"/>
         <ActionButton url="/intervals" name="Intervals" icon="MdOutlinePiano"/>
         <ActionButton url="/songs" name="Songs" icon="MdOutlineLibraryMusic"/>
-        <ActionButton url="/topics" name="Topics" icon="MdOutlineMenuBook"/>
         <ActionButton url="/roles" name="Roles" icon="MdChecklist"/>
         <ActionButton url="/users" name="Users" icon="MdOutlineAccountBox"/>
         <ActionButton url="/avatars" name="Avatars" icon="MdOutlineAccountCircle"/>

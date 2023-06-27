@@ -1,0 +1,45 @@
+@import './../../../../variables';
+
+.Inputs {
+    display: flex;
+    flex-flow: row wrap;
+
+    > .Input-Container {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        padding: 1.25rem;
+    
+        > * {
+            max-width: 28.6875rem;
+        }
+    }
+
+}
+
+.Uploaders {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    gap: 3rem;
+
+    > .Uploader {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        border-radius: 0.5rem;
+        background-color: $background-color;
+        padding: 1.875rem;
+
+        > div {
+            min-width: auto;
+        }
+
+        > span {
+            font-family: "Barlow Condensed", sans-serif;
+            font-size: 1.5rem;
+            align-self: center;
+        }
+    }
+}

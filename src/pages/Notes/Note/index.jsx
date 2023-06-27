@@ -108,7 +108,13 @@ export const Note = () => {
             return res.json();
         }).then((data) => {
             if (data.error) {
-                throw new Error(data.error);
+                let errorMessage = '';
+                if (typeof data.error === 'string') {
+                    errorMessage = data.error;
+                } else if (typeof data.error === 'object' && data.error.name) {
+                    errorMessage = data.error.name;
+                }
+                throw new Error(errorMessage);
             }
 
             toast.success("Nota modificada!", {
@@ -118,6 +124,7 @@ export const Note = () => {
                 pauseOnFocusLoss: false,
                 autoClose:3000
             });
+            navigate("/notes");
             return;
         }).catch((error) => {
             toast.error(`${error}`, {
@@ -161,7 +168,13 @@ export const Note = () => {
             return res.json();
         }).then((data) => {
             if (data.error) {
-                throw new Error(data.error);
+                let errorMessage = '';
+                if (typeof data.error === 'string') {
+                    errorMessage = data.error;
+                } else if (typeof data.error === 'object' && data.error.name) {
+                    errorMessage = data.error.name;
+                }
+                throw new Error(errorMessage);
             }
 
             toast.success("Acorde agregado!", {
@@ -233,6 +246,13 @@ export const Note = () => {
                         picture: `${url}`
                     }));
                 }
+                toast.success("Imagen seleccionada!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
             });
         });
     }
@@ -280,6 +300,13 @@ export const Note = () => {
                         mp3: `${url}`
                     }));
                 }
+                toast.success("Audio seleccionado!", {
+                    hideProgressBar: true,
+                    theme: "dark",
+                    toastId: "Success",
+                    pauseOnFocusLoss: false,
+                    autoClose:3000
+                });
             });
         });
     }
