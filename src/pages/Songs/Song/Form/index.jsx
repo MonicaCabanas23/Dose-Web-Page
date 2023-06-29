@@ -90,7 +90,7 @@ export const Form = ({ info, setInfo, id}) => {
             toast.success("Imagenes modificadas", {
                 hideProgressBar: true,
                 theme: "dark",
-                toastId: "Success",
+                toastId: "ImageSucces",
                 pauseOnFocusLoss: false,
                 autoClose:3000
             });
@@ -103,7 +103,7 @@ export const Form = ({ info, setInfo, id}) => {
             toast.success("Imagenes añadidas", {
                 hideProgressBar: true,
                 theme: "dark",
-                toastId: "Success",
+                toastId: "ImageSucces",
                 pauseOnFocusLoss: false,
                 autoClose:3000
             });
@@ -140,7 +140,7 @@ export const Form = ({ info, setInfo, id}) => {
     const uploadAudioToFirebase = async (audio) => {
         // audio is an array which has data_url and the file        
         if (info.name === undefined) {
-            toast.error("No hay audio para guardar", {
+            toast.error("Ingrese nombre de canción", {
                 hideProgressBar: true,
                 theme: "dark",
                 toastId: "Error",
@@ -177,7 +177,7 @@ export const Form = ({ info, setInfo, id}) => {
                     toast.success("Audio modificado", {
                         hideProgressBar: true,
                         theme: "dark",
-                        toastId: "Success",
+                        toastId: "AudioSucces",
                         pauseOnFocusLoss: false,
                         autoClose:3000
                     });
@@ -191,7 +191,7 @@ export const Form = ({ info, setInfo, id}) => {
                     toast.success("Audio agregado", {
                         hideProgressBar: true,
                         theme: "dark",
-                        toastId: "Success",
+                        toastId: "AudioSucces",
                         pauseOnFocusLoss: false,
                         autoClose:3000
                     });
