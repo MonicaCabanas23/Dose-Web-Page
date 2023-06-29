@@ -1,0 +1,50 @@
+@import './../../variables';
+
+.NotFound404 {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5em;
+    padding: 1em;
+    color: $primary-text-icons-color;
+
+    > .SadIcon {
+        > svg {
+            width: 7em;
+            height: 7em;
+        }
+    }
+
+    > .Info404 {
+        display: flex;        
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        > h2 {
+            font-size: 2.5em;
+        }
+
+        > h3 {
+            font-size: 1.5em;
+        }
+    }
+
+    > a {
+        display: block;
+        text-decoration: none;
+        font-weight: 800;
+        color: #000;
+        background-color: $primary-color;
+        padding: 1em 1.5em;
+        border-radius: 0.5em;
+        transition: 500ms;
+
+        &:hover {            
+            background-color: $dark-primary-color;
+        }
+
+    }
+}
