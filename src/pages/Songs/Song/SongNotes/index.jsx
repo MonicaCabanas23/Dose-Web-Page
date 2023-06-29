@@ -29,9 +29,7 @@ export const SongNotes = ({ info, setInfo, id}) => {
     const [selectedNote, setSelectedNote] = useState("Do 4")
     const [selectedNotation, setSelectedNotation] = useState("natural")
     const [selectedDuration, setSelectedDuration] = useState(4)
-    const [durationValue, setDurationValue] = useState({
-        $numberDecimal: (60/info.ppm) * 4
-    })
+    const [durationValue, setDurationValue] = useState((60/info.ppm) * 4)
     // For comboBoxes
     const availableNotes = [
         "Do 4", 
@@ -117,14 +115,13 @@ export const SongNotes = ({ info, setInfo, id}) => {
             setNoteName("Silence")
             return
         }
+
     }, [selectedNotation, selectedNote, note, silence])
 
     useEffect(() => {
         // Duration of a note depending of the time of note it is (black, white, corchea, etc)
-        const unitTime = 60 / info.ppm
-        const duration = {
-            $numberDecimal: (selectedDuration * unitTime).toFixed(3)
-        }
+        const unitTime = Math.trunc((60 / info.ppm) * 1000)
+        const duration = (selectedDuration * unitTime)
 
         setDurationValue(duration)
 
@@ -200,7 +197,21 @@ export const SongNotes = ({ info, setInfo, id}) => {
     
             if(symbolNumber && symbolName[0] != "Silence") {
                 const _selectedNote = symbolName[0] +  " " + symbolNumber[0]
+
+                if(_selectedNote === "Mi 4" || _selectedNote === "Mi 5" || _selectedNote === "Si 4") {
+                    console.log(_selectedNote, flat)
+                    setFlat(true)
+                    setSharp(false)
+                } else if(_selectedNote === "Fa 4" || _selectedNote === "Fa 5" || _selectedNote === "Do 4" || _selectedNote === "Do 5") {
+                    setSharp(true)
+                    setFlat(false)
+                } else {
+                    setSharp(true)
+                    setFlat(true)
+                }
+                
                 setSelectedNote(_selectedNote)
+
             } else {
                 setNote(false)
                 setSilence(true)
@@ -214,31 +225,31 @@ export const SongNotes = ({ info, setInfo, id}) => {
                 setSelectedNotation(symbolNotation[0])
             }
 
-            let symbolDuration
+            let symbolDuration 
 
             if(_selectedSymbol.duration.$numberDecimal) {
-                symbolDuration = _selectedSymbol.duration.$numberDecimal
+                symbolDuration = Math.trunc(_selectedSymbol.duration.$numberDecimal)
             } else {
-                symbolDuration = _selectedSymbol.duration
+                symbolDuration = Math.trunc(_selectedSymbol.duration)
             }
-    
+
             switch (symbolDuration) {
-                case ((60/info.ppm) * 4).toFixed(3): 
+                case (Math.trunc((60/info.ppm) * 1000 * 4)): 
                     setSelectedDuration(4)
                     break;
-                case ((60/info.ppm) * 2).toFixed(3): 
+                case (Math.trunc((60/info.ppm) * 1000 * 2)): 
                     setSelectedDuration(2)
                     break;
-                case ((60/info.ppm) * 1).toFixed(3): 
+                case (Math.trunc((60/info.ppm) * 1000 * 1)): 
                     setSelectedDuration(1)
                     break;
-                case ((60/info.ppm) * 0.5).toFixed(3): 
+                case (Math.trunc((60/info.ppm) * 1000 * 0.5)): 
                     setSelectedDuration(0.5)
                     break;
-                case ((60/info.ppm) * 0.25).toFixed(3): 
+                case (Math.trunc((60/info.ppm) * 1000 * 0.25)): 
                     setSelectedDuration(0.25)
                     break;
-                case ((60/info.ppm) * 0.125).toFixed(3): 
+                case (Math.trunc((60/info.ppm) * 1000 * 0.125)): 
                     setSelectedDuration(0.125)
                     break;
                 default:
@@ -277,6 +288,13 @@ export const SongNotes = ({ info, setInfo, id}) => {
         _data[index] = noteObject
         setData(_data)
 
+        toast.success("Nota editada exitosamente", {
+            hideProgressBar: true,
+            theme: "dark",
+            pauseOnFocusLoss: false,
+            autoClose:3000
+        });
+
         setShowEdit(false) 
         clearData()
         setIsEditing(false)
@@ -289,7 +307,6 @@ export const SongNotes = ({ info, setInfo, id}) => {
         toast.success("Nota eliminada exitosamente", {
             hideProgressBar: true,
             theme: "dark",
-            toastId: "Success",
             pauseOnFocusLoss: false,
             autoClose:3000
         });
@@ -304,6 +321,13 @@ export const SongNotes = ({ info, setInfo, id}) => {
         let _data = data
         _data.push(noteObject)
         setData(_data)
+
+        toast.success("Nota agregada exitosamente", {
+            hideProgressBar: true,
+            theme: "dark",
+            pauseOnFocusLoss: false,
+            autoClose:3000
+        });
 
         setShowAdd(false)
         clearData()
