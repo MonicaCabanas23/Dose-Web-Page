@@ -1,5 +1,51 @@
 @import './../../variables';
 
+.First {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: $primary-text-icons-color;
+    position: relative;
+
+    > .Logo {        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.625rem;
+        user-select: none;
+        animation: slide_in 500ms ease-out forwards;
+        
+        > svg {
+            font-size: 10rem;
+            pointer-events: none;
+            object-fit: contain;
+            color: $primary-color;
+            filter: drop-shadow(0px 5px 3px #fff);
+        }
+
+        > h1 {
+            font-size: 5rem;
+            font-family: 'Barlow Condensed';
+            color: $primary-color;
+            filter: drop-shadow(0px 5px 2px #fff);
+        }
+    }
+}
+
+@keyframes slide_in {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .Section {
     background-image: url("./../../assets/Background_Image.png");
     background-position: center;
@@ -46,6 +92,7 @@
     }
 
     @media only screen and (max-width: 1240px) {
+        padding-block: 5rem 2.5rem;
         > .Text {
             max-width: 30rem;
             
@@ -55,10 +102,10 @@
                 font-size: 3rem;
             }
     
-            > .p {
+            > p {
                 text-align: center;
                 font-family: 'Montserrat', sans-serif;
-                font-size: 1.2rem;
+                font-size: 1.5rem;
             }
         }
     }
@@ -69,85 +116,120 @@
         }
     }
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 768px) {        
         flex-direction: column;
         min-height: 100vh;
         height: unset;
         gap: 2rem
     }
+
+    &:nth-child(4) {
+        background-image: unset;
+        max-height: 28.125rem;
+        background-color: $dark-primary-color;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2.5rem;
+        gap: 3.4375rem;
+        font-family: 'Barlow Condensed', sans-serif;
+    
+        > h1 {
+            text-align: center;
+            font-size: 4rem;
+            z-index: 2;
+        }
+    
+        > .Reasons {
+            z-index: 2;
+            display: flex;
+            max-width: 90rem;
+            gap: 2.5rem;
+            
+            > .Reason {
+                display: flex;
+                gap: 1rem;
+                align-items: start;
+                
+                > .Icon {
+                    > svg {
+                        font-size: 2.5rem;                    
+                    }
+                }
+    
+                > .Reason-Body {
+                    display: flex;
+                    gap: 1rem;
+                    flex-direction: column;
+                    > h2 {
+                        font-size: 2.25rem;
+                    }
+    
+                    > p {
+                        font-family: 'Montserrat', sans-serif;
+                        font-size: 1.375rem;
+                    }
+                }
+            }
+        }
+    
+        > .Ellipse {
+            position: absolute;
+    
+            &.Ellipse-1 {
+                left: 0;
+                top: 0;
+                transform: translate(-50%, -50%);
+            }
+    
+            &.Ellipse-2 {
+                right: 0;
+                bottom: 0;
+                transform: translate(50%, 50%);
+            }
+        }
+    
+        @media only screen and (max-width: 768px) {
+            > h1 {
+                text-align: center;
+                font-size: 3rem;
+                z-index: 2;
+            }
+    
+            > .Reasons {
+                flex-direction: column;
+    
+                > .Reason {
+                    flex-direction: column;
+                    align-items: center;
+    
+                    > .Reason-Body {
+                        > h2 {
+                            font-size: 1.75rem;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }    
+    }
 }
 
 .Footer {
-    min-height: 28.125rem;
-    background-color: $dark-primary-color;
+    background-image: unset;
+    height: 2.5rem;
+    background-color: $primary-text-icons-color;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2.5rem;
+    padding: 1.5rem;
     gap: 3.4375rem;
-    font-family: 'Barlow Condensed', sans-serif;
-
-    > h1 {        
-        text-align: center;        
-        font-size: 4rem;
-        z-index: 2;
-    }
-
-    > .Reasons {
-        z-index: 2;
-        display: flex;
-        max-width: 90rem;
-        gap: 2.5rem;
-        
-        > .Reason {
-            display: flex;
-            gap: 1rem;
-            align-items: start;
-            
-            > .Icon {
-                > svg {
-                    font-size: 2.5rem;                    
-                }
-            }
-
-            > .Reason-Body {
-                display: flex;
-                gap: 1rem;
-                flex-direction: column;
-                > h2 {
-                    font-size: 2.25rem;                    
-                }
-
-                > p {
-                    font-family: 'Montserrat', sans-serif;
-                    font-size: 1.375rem;
-                }
-            }
-        }
-    }
-
-    > .Ellipse {
-        position: absolute;
-
-        &.Ellipse-1 {
-            left: 0;
-            top: 0;
-            transform: translate(-50%, -50%);
-        }
-
-        &.Ellipse-2 {
-            right: 0;
-            bottom: 0;
-            transform: translate(50%, 50%);
-        }
-    }
-
-    @media only screen and (max-width: 768px) {
-        > .Reasons {
-            flex-direction: column;
-        }
-    }
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
 }

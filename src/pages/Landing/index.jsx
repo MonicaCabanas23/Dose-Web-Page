@@ -6,11 +6,17 @@ import Ellipse from './../../assets/Ellipse.png';
 
 import { FaGraduationCap } from "react-icons/fa";
 import { CgGym } from 'react-icons/cg';
-import { MdLeaderboard } from 'react-icons/md';
+import { MdLeaderboard, MdOutlinePiano } from 'react-icons/md';
 
 export const Landing = () => {
     return (
         <>
+            <section className={ classes["First"] }>
+                <div className={ classes["Logo"] }>
+                    <MdOutlinePiano/>
+                    <h1>MINGO</h1>
+                </div>                
+            </section>
             <section className={ classes["Section"] }>
                 <div className={ classes["Image"] }>
                     <img src={Phone1}/>
@@ -42,7 +48,7 @@ export const Landing = () => {
                 </div>
             </section>
 
-            <div className={ classes["Footer"] }>
+            <section className={ classes["Section"] }>
                 <img className={ [classes["Ellipse"], classes["Ellipse-1"]].join(" ") } src={Ellipse}/>
                 <img className={ [classes["Ellipse"], classes["Ellipse-2"]].join(" ") } src={Ellipse}/>
                 <h1>Reasons why you should try Mingo</h1>
@@ -64,18 +70,12 @@ export const Landing = () => {
                             <h2>Train at your own pace</h2>
                             <p>You can whether practice or learn whenever you want and get statistics of your progress.</p>
                         </div>
-                    </div>
-                    <div className={ classes["Reason"] }>
-                        <div className={ classes["Icon"] }>
-                            <MdLeaderboard/>
-                        </div>
-                        <div className={ classes["Reason-Body"] }>
-                            <h2>You’re not alone</h2>
-                            <p>Compete with others who, like you, are learning and improving their mastery at music.</p>
-                        </div>
-                    </div>
+                    </div>                    
                 </div>
-            </div>
+            </section> 
+            <footer className={ classes["Footer"] }>
+                <p>&copy; 2023 MINGO. All rights reserved.</p>             
+            </footer>           
         </>
     )
 }
