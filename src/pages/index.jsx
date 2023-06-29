@@ -4,6 +4,8 @@ import { Home } from "./Home";
 import { Notes } from "./Notes";
 import { Note } from "./Notes/Note";
 
+import { NotFound } from "./NotFound"
+
 import { Chord } from "./Chords/Chord";
 import { Chords } from "./Chords";
 import { Intervals } from "./Intervals";
@@ -15,4 +17,4 @@ import { Roles } from "./Roles";
 import { Users } from "./Users";
 import { Avatars } from "./Avatars";
 
-export { Avatars, Users, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song};
+export { Avatars, Users, Chords, Chord, Home, NotFound, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song};

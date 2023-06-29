@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate  } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Avatars, Chords, Chord, Home, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Users } from "./pages";
+import { Avatars, Chords, Chord, Home, NotFound, Intervals, Interval, Landing, Login, Notes, Note, Roles, Songs, Song, Users } from "./pages";
 import { NoAuthLayout } from "./layouts/NoAuthLayout/NoAuthLayout";
 import { MainLayout } from "./layouts/MainLayout/MainLayout";
 
@@ -52,7 +52,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/login" element={<Login/>}/>
-          <Route path="*" element={<h1>404 Not Found</h1>}/>
+          <Route path="*" element={<NotFound/>}/>
         </Routes>
       </BrowserRouter>
     </div>
