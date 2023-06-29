@@ -43,3 +43,13 @@
         }
     }
 }
+
+@media only screen and (max-width: 1024px) {
+    .Inputs {
+        flex-direction: column;
+    }
+
+    .Uploaders {
+        flex-direction: column;
+    }
+}
