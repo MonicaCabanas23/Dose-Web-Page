@@ -15,6 +15,8 @@ export const Landing = () => {
                 <div className={ classes["Logo"] }>
                     <MdOutlinePiano/>
                     <h1>MINGO</h1>
+                    <h2>"Learn music at your own pace with MINGO <br/>
+                        and make music with your own note!"</h2>
                 </div>                
             </section>
             <section className={ classes["Section"] }>
