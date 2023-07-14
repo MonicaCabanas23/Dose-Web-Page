@@ -1,6 +1,6 @@
 import classes from './NoAuthLayout.module.scss';
 import logo from './../../assets/logo.png';
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 export const NoAuthLayout = ({scrollTop}) => {    
     return (
@@ -9,9 +9,9 @@ export const NoAuthLayout = ({scrollTop}) => {
                 <div className={ classes["Logo"] }>
                     <img src={logo}/> <h1>MINGO</h1>
                 </div>
-                <button className={ classes["Button"] }>
+                <Link className={ classes["Button"] } to="mingo.apk" download={true} target='_blank' >
                     Let’s get started
-                </button>
+                </Link>
             </header>
             <main className={ classes["Main"] }>
                 <Outlet/>
