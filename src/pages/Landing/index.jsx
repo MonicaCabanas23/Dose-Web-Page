@@ -83,7 +83,7 @@ export const Landing = () => {
                 </div>
             </section> 
             <footer className={ classes["Footer"] }>
-                <p>&copy; 2023 MINGO. All rights reserved.</p>             
+                <p>&copy; 2025 DOSE. All rights reserved.</p>             
             </footer>           
         </>
     )
