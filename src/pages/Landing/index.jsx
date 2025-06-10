@@ -2,10 +2,11 @@ import classes from './Landing.module.scss';
 
 import Phone1 from './../../assets/Phone1.png';
 import Phone2 from './../../assets/Phone2.png';
-import Ellipse from './../../assets/Ellipse.png';
+import logo from './../../assets/logo.png';
 
-import { FaGraduationCap } from "react-icons/fa";
-import { CgGym } from 'react-icons/cg';
+import { TbUserQuestion } from "react-icons/tb";
+import { FaRegClock } from "react-icons/fa";
+import { BiWorld } from "react-icons/bi";
 import { MdLeaderboard, MdOutlinePiano } from 'react-icons/md';
 
 export const Landing = () => {
@@ -13,10 +14,9 @@ export const Landing = () => {
         <>
             <section className={ classes["First"] }>
                 <div className={ classes["Logo"] }>
-                    <MdOutlinePiano/>
-                    <h1>MINGO</h1>
-                    <h2>"Learn music at your own pace with MINGO <br/>
-                        and make music with your own note!"</h2>
+                    <img src={logo} />
+                    <h1>DOSE</h1>
+                    <h2>"Organiza tu medicación de forma fácil y segura"</h2>
                 </div>                
             </section>
             <section className={ classes["Section"] }>
@@ -25,24 +25,24 @@ export const Landing = () => {
                 </div>
                 
                 <div className={ classes["Text"] }>
-                    <h1>Learn to read music the easiest way</h1>
+                    <h1>Organiza tu medicación de forma fácil y segura</h1>
                     <p className={ classes["Text-body"] }>
-                        Excel at reading music sheets and easily identify the main musical notes and chords in the staff. 
-                        <br/>
-                        <br/>
-                        Get statistics of your progress and compete with others while practicing.
+                        Con Dose, recibe alertas personalizadas para no olvidar ningún medicamento. 
+                        <br />
+                        <br />
+                        Administra tus tratamientos diarios de manera práctica y sin complicaciones.
                     </p>
                 </div>
             </section>
 
             <section className={ classes["Section"] }>
                 <div className={ classes["Text"] }>
-                    <h1>Recognize notes, chords and intervals by ear</h1>
+                    <h1>Configura tus medicamentos en segundos</h1>
                     <p className={ classes["Text-body"] }>
-                        When it comes to music, recognizing what we play or hear becomes an essential skill. 
-                        <br/>
-                        <br/>
-                        In Mingo you can train your ear for recognizing notes, chords and intervals through interactive games.
+                        Agrega el nombre del medicamento, la dosis, frecuencia y horario. 
+                        <br />
+                        <br />
+                        Dose se encarga de recordártelo puntualmente. También puedes registrar el tipo de medicamento para llevar un control más claro.
                     </p>
                 </div>
                 <div className={ classes["Image"] }>
@@ -51,26 +51,33 @@ export const Landing = () => {
             </section>
 
             <section className={ classes["Section"] }>
-                <img className={ [classes["Ellipse"], classes["Ellipse-1"]].join(" ") } src={Ellipse}/>
-                <img className={ [classes["Ellipse"], classes["Ellipse-2"]].join(" ") } src={Ellipse}/>
-                <h1>Reasons why you should try Mingo</h1>
+                <h1 className={ classes["Text"] }>Razones para usar Dose</h1>
                 <div className={ classes["Reasons"] }>
                     <div className={ classes["Reason"] }>
                         <div className={ classes["Icon"] }>
-                            <FaGraduationCap/>
+                            <TbUserQuestion />
                         </div>
                         <div className={ classes["Reason-Body"] }>
-                            <h2>Learn the basics</h2>
-                            <p>Learn the basics of musical theory if you are beginner along the practices of reading and listening.</p>
+                            <h2>Evita olvidos</h2>
+                            <p>Recibe notificaciones en el momento exacto para cada toma de medicamento.</p>
                         </div>
                     </div>
                     <div className={ classes["Reason"] }>
                         <div className={ classes["Icon"] }>
-                            <CgGym/>
+                            <FaRegClock />
                         </div>
                         <div className={ classes["Reason-Body"] }>
-                            <h2>Train at your own pace</h2>
-                            <p>You can whether practice or learn whenever you want and get statistics of your progress.</p>
+                            <h2>Adaptado a ti</h2>
+                            <p>Configura los horarios, la frecuencia y el tipo de medicamento según tus necesidades.</p>
+                        </div>
+                    </div>
+                    <div className={ classes["Reason"] }>
+                        <div className={ classes["Icon"] }>
+                            <BiWorld />
+                        </div>
+                        <div className={ classes["Reason-Body"] }>
+                            <h2>Disponible en español e inglés</h2>
+                            <p>Cambia fácilmente el idioma de la aplicación y úsala en el que prefieras.</p>
                         </div>
                     </div>                    
                 </div>

@@ -14,9 +14,10 @@
         align-items: center;
         gap: 0.625rem;
         user-select: none;
-        
+
         > img {
-            transform: scale(0.75);
+            width: 1rem !important; 
+            height: 1rem !important;
             pointer-events: none;
             object-fit: contain;
         }

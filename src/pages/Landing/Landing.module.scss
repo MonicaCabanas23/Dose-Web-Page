@@ -116,6 +116,7 @@
             text-align: center;
             font-family: 'Barlow Condensed', sans-serif;
             font-size: 4rem;
+            color: $primary-color;
         }
 
         > p {
@@ -159,7 +160,7 @@
 
     &:nth-child(4) {
         background-image: unset;
-        max-height: 28.125rem;
+        max-height: fit-content;
         background-color: $dark-primary-color;
         position: relative;
         overflow: hidden;
@@ -175,6 +176,7 @@
             text-align: center;
             font-size: 4rem;
             z-index: 2;
+            color: $background-color;
         }
     
         > .Reasons {
@@ -190,6 +192,7 @@
                 
                 > .Icon {
                     > svg {
+                        color: $light-primary-color;
                         font-size: 2.5rem;                    
                     }
                 }
@@ -200,11 +203,13 @@
                     flex-direction: column;
                     > h2 {
                         font-size: 2.25rem;
+                        color: $background-color;
                     }
     
                     > p {
                         font-family: 'Montserrat', sans-serif;
                         font-size: 1.375rem;
+                        color: $background-color;
                     }
                 }
             }
@@ -264,6 +269,6 @@
     align-items: center;
     padding: 1.5rem;
     gap: 3.4375rem;
-    color: #fff;
+    color: $secondary-text-color;
     font-family: 'Montserrat', sans-serif;
 }
