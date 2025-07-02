@@ -9,7 +9,7 @@ export const NoAuthLayout = ({scrollTop}) => {
                 <div className={ classes["Logo"] }>
                     <img src={logo}/> <h1>DOSE</h1>
                 </div>
-                <Link className={ classes["Button"] } to="mingo.apk" download={true} target='_blank' >
+                <Link className={ classes["Button"] } to="app-debug.apk" download={true} target='_blank' >
                     Let’s get started
                 </Link>
             </header>
